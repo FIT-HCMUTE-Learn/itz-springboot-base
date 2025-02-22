@@ -1,6 +1,7 @@
 package com.base.auth;
 
 import com.base.auth.component.AuditorAwareImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -21,6 +22,7 @@ import java.util.TimeZone;
 @EnableFeignClients
 @EnableScheduling
 @EnableAspectJAutoProxy
+@Slf4j
 //@EnableEurekaClient
 public class UserServiceApplication {
     @Bean

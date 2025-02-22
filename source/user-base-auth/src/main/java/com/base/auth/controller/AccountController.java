@@ -118,7 +118,6 @@ public class AccountController extends ABasicController{
 
         apiMessageDto.setMessage("Update account admin success");
         return apiMessageDto;
-
     }
 
 

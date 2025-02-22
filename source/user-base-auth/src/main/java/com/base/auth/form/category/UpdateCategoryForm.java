@@ -1,7 +1,5 @@
 package com.base.auth.form.category;
 
-
-import com.base.auth.validation.CategoryKind;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
