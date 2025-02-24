@@ -2,19 +2,25 @@ package com.base.auth.controller;
 
 import com.base.auth.dto.ApiMessageDto;
 import com.base.auth.dto.ErrorCode;
+import com.base.auth.dto.ResponseListDto;
 import com.base.auth.dto.news.NewsAdminDto;
 import com.base.auth.form.news.CreateNewsForm;
 import com.base.auth.form.news.UpdateNewsForm;
 import com.base.auth.mapper.NewsMapper;
 import com.base.auth.model.News;
+import com.base.auth.model.criteria.NewsCriteria;
 import com.base.auth.repository.NewsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/v1/news")
@@ -27,18 +33,26 @@ public class NewsController {
     private NewsMapper newsMapper;
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiMessageDto<List<NewsAdminDto>> getNewsAdminList() {
-        ApiMessageDto<List<NewsAdminDto>> apiMessageDto = new ApiMessageDto<>();
+    @PreAuthorize("hasRole('NEWS_L')")
+    public ApiMessageDto<ResponseListDto<List<NewsAdminDto>>> getNewsAdminList(NewsCriteria newsCriteria, Pageable pageable) {
+        Specification<News> specification = newsCriteria.getSpecification();
+        Page<News> newsPage = newsRepository.findAll(specification, pageable);
 
-        List<News> newsList = newsRepository.findAll();
-        apiMessageDto.setData(newsMapper.fromEntityToNewsAdminDtoList(newsList));
+        ResponseListDto<List<NewsAdminDto>> result = new ResponseListDto<>(
+                newsMapper.fromEntityToNewsAdminDtoList(newsPage.getContent()),
+                newsPage.getTotalElements(),
+                newsPage.getTotalPages()
+        );
+
+        ApiMessageDto<ResponseListDto<List<NewsAdminDto>>> apiMessageDto = new ApiMessageDto<>();
+        apiMessageDto.setData(result);
         apiMessageDto.setMessage("Get news admin list successfully");
 
         return apiMessageDto;
     }
 
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('NEWS_V')")
+    @PreAuthorize("hasRole('NEWS_V')")
     public ApiMessageDto<NewsAdminDto> getNewsById(@PathVariable Long id) {
         ApiMessageDto<NewsAdminDto> apiMessageDto = new ApiMessageDto<>();
 
@@ -85,6 +99,14 @@ public class NewsController {
             apiMessageDto.setResult(false);
             apiMessageDto.setCode(ErrorCode.NEWS_ERROR_NOT_FOUND);
             apiMessageDto.setMessage("News not found");
+            return apiMessageDto;
+        }
+
+        if (!Objects.equals(news.getTitle(), updateNewsForm.getTitle())
+                && newsRepository.existsByTitle(updateNewsForm.getTitle())) {
+            apiMessageDto.setResult(false);
+            apiMessageDto.setCode(ErrorCode.NEWS_ERROR_EXISTED);
+            apiMessageDto.setMessage("Title already exists");
             return apiMessageDto;
         }
 

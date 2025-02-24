@@ -26,7 +26,6 @@ public class CreatePermissionForm {
     @NotEmpty(message = "nameGroup cant not be null")
     @ApiModelProperty(name = "nameGroup", required = true)
     private String nameGroup;
-
     @NotEmpty(message = "permissionCode cant not be null")
     @ApiModelProperty(name = "permissionCode", required = true)
     private String permissionCode;

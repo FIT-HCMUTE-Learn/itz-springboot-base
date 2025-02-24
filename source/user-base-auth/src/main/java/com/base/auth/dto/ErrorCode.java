@@ -28,7 +28,6 @@ public class ErrorCode {
     public static final String ACCOUNT_ERROR_MERCHANT_SERVICE_NOT_REGISTER = "ERROR-ACCOUNT-0011";
     public static final String ACCOUNT_ERROR_NOT_ALLOW_DELETE_SUPPER_ADMIN = "ERROR-ACCOUNT-0012";
 
-
     /**
      * Starting error code Customer
      * */
@@ -58,7 +57,7 @@ public class ErrorCode {
     public static final String NATION_ERROR_NOT_FOUND = "ERROR-NATION-0001";
     public static final String NATION_ERROR_NOT_ALLOW_HAVE_PARENT = "ERROR-NATION-0002";
     public static final String NATION_ERROR_PARENT_INVALID = "ERROR-NATION-0003";
-    public static final String NATION_ERROR_NOT_ALLOW_UPDATE_KIND = "ERROR-NATION-0004";
+    public static final String NATION_ERROR_NOT_ALLOW_UPDATE_TYPE = "ERROR-NATION-0004";
     public static final String NATION_ERROR_CANT_DELETE_RELATIONSHIP_WITH_ADDRESS = "ERROR-NATION-0005";
     /**
      * Starting error code ADDRESS

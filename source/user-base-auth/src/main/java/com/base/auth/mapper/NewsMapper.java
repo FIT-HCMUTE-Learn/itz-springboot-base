@@ -34,7 +34,6 @@ public interface NewsMapper {
     @IterableMapping(elementTargetType = NewsAdminDto.class, qualifiedByName = "fromEntityToNewsAdminDto")
     List<NewsAdminDto> fromEntityToNewsAdminDtoList(List<News> news);
 
-
     @Mapping(source = "id", target = "id")
     @Mapping(source = "status", target = "status")
     @Mapping(source = "description", target = "description")
