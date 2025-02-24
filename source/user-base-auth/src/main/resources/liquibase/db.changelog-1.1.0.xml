@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet author="Authentication" id="20250222-1">
+        <createTable tableName="db_user_base_nation">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="type" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Authentication" id="20250222-2">
+        <createTable tableName="db_user_base_customer">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="account_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="birthday" type="DATE"/>
+            <column name="gender" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="province_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="district_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="commune_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Authentication" id="20250222-3">
+        <addForeignKeyConstraint
+                baseTableName="db_user_base_customer"
+                baseColumnNames="account_id"
+                referencedTableName="db_user_base_account"
+                referencedColumnNames="id"
+                constraintName="fk_customer_account"/>
+        <addForeignKeyConstraint
+                baseTableName="db_user_base_customer"
+                baseColumnNames="province_id"
+                referencedTableName="db_user_base_nation"
+                referencedColumnNames="id"
+                constraintName="fk_customer_province"/>
+
+        <addForeignKeyConstraint
+                baseTableName="db_user_base_customer"
+                baseColumnNames="district_id"
+                referencedTableName="db_user_base_nation"
+                referencedColumnNames="id"
+                constraintName="fk_customer_district"/>
+
+        <addForeignKeyConstraint
+                baseTableName="db_user_base_customer"
+                baseColumnNames="commune_id"
+                referencedTableName="db_user_base_nation"
+                referencedColumnNames="id"
+                constraintName="fk_customer_commune"/>
+    </changeSet>
+
+    <changeSet author="Authentication" id="20250222-4">
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233689553108992"/>
+            <column name="action" value="/v1/category/get"/>
+            <column name="description" value="Get category"/>
+            <column name="name" value="Get category"/>
+            <column name="name_group" value="Category"/>
+            <column name="p_code" value="CATE_V"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 07:57:54"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 07:57:54"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233690468450304"/>
+            <column name="action" value="/v1/category/list"/>
+            <column name="description" value="Get list category"/>
+            <column name="name" value="Get list category"/>
+            <column name="name_group" value="Category"/>
+            <column name="p_code" value="CATE_L"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 07:58:22"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 07:58:22"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233691268022272"/>
+            <column name="action" value="/v1/category/create"/>
+            <column name="description" value="Create category"/>
+            <column name="name" value="Create category"/>
+            <column name="name_group" value="Category"/>
+            <column name="p_code" value="CATE_C"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 07:58:47"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 07:58:47"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233691834580992"/>
+            <column name="action" value="/v1/category/update"/>
+            <column name="description" value="Update category"/>
+            <column name="name" value="Update category"/>
+            <column name="name_group" value="Category"/>
+            <column name="p_code" value="CATE_U"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 07:59:04"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 07:59:04"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233693160636416"/>
+            <column name="action" value="/v1/category/delete"/>
+            <column name="description" value="Delete category"/>
+            <column name="name" value="Delete category"/>
+            <column name="name_group" value="Category"/>
+            <column name="p_code" value="CATE_D"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 07:59:45"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 07:59:45"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233700446535680"/>
+            <column name="action" value="/v1/news/list"/>
+            <column name="description" value="Get list news"/>
+            <column name="name" value="Get list news"/>
+            <column name="name_group" value="News"/>
+            <column name="p_code" value="NEWS_L"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 08:03:27"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 08:03:27"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233701385535488"/>
+            <column name="action" value="/v1/news/get"/>
+            <column name="description" value="Get news"/>
+            <column name="name" value="Get news"/>
+            <column name="name_group" value="News"/>
+            <column name="p_code" value="NEWS_V"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 08:03:56"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 08:03:56"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233701845598208"/>
+            <column name="action" value="/v1/news/create"/>
+            <column name="description" value="Create news"/>
+            <column name="name" value="Create news"/>
+            <column name="name_group" value="News"/>
+            <column name="p_code" value="NEWS_C"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 08:04:10"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 08:04:10"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233702345506816"/>
+            <column name="action" value="/v1/news/update"/>
+            <column name="description" value="Update news"/>
+            <column name="name" value="Update news"/>
+            <column name="name_group" value="News"/>
+            <column name="p_code" value="NEWS_U"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 08:04:25"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 08:04:25"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233702766182400"/>
+            <column name="action" value="/v1/news/delete"/>
+            <column name="description" value="Delete news"/>
+            <column name="name" value="Delete news"/>
+            <column name="name_group" value="News"/>
+            <column name="p_code" value="NEWS_D"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 08:04:38"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 08:04:38"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233704252768256"/>
+            <column name="action" value="/v1/nation/list"/>
+            <column name="description" value="Get list nation"/>
+            <column name="name" value="Get list nation"/>
+            <column name="name_group" value="Nation"/>
+            <column name="p_code" value="NAT_L"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 08:05:23"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 08:05:23"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233704648540160"/>
+            <column name="action" value="/v1/nation/get"/>
+            <column name="description" value="Get nation"/>
+            <column name="name" value="Get nation"/>
+            <column name="name_group" value="Nation"/>
+            <column name="p_code" value="NAT_V"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 08:05:35"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 08:05:35"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233705300000768"/>
+            <column name="action" value="/v1/nation/create"/>
+            <column name="description" value="Create nation"/>
+            <column name="name" value="Create nation"/>
+            <column name="name_group" value="Nation"/>
+            <column name="p_code" value="NAT_C"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 08:05:55"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 08:05:55"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233705754656768"/>
+            <column name="action" value="/v1/nation/update"/>
+            <column name="description" value="Update nation"/>
+            <column name="name" value="Update nation"/>
+            <column name="name_group" value="Nation"/>
+            <column name="p_code" value="NAT_U"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 08:06:09"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 08:06:09"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233706302078976"/>
+            <column name="action" value="/v1/nation/delete"/>
+            <column name="description" value="Delete nation"/>
+            <column name="name" value="Delete nation"/>
+            <column name="name_group" value="Nation"/>
+            <column name="p_code" value="NAT_D"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 08:06:26"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 08:06:26"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233707728011264"/>
+            <column name="action" value="/v1/customer/list"/>
+            <column name="description" value="Get list customer"/>
+            <column name="name" value="Get list customer"/>
+            <column name="name_group" value="Customer"/>
+            <column name="p_code" value="CUS_L"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 08:07:09"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 08:07:09"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233708185452544"/>
+            <column name="action" value="/v1/customer/get"/>
+            <column name="description" value="Get customer"/>
+            <column name="name" value="Get customer"/>
+            <column name="name_group" value="Customer"/>
+            <column name="p_code" value="CUS_V"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 08:07:23"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 08:07:23"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233708655968256"/>
+            <column name="action" value="/v1/customer/create"/>
+            <column name="description" value="Create customer"/>
+            <column name="name" value="Create customer"/>
+            <column name="name_group" value="Customer"/>
+            <column name="p_code" value="CUS_C"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 08:07:37"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 08:07:37"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233709243170816"/>
+            <column name="action" value="/v1/customer/update"/>
+            <column name="description" value="Update customer"/>
+            <column name="name" value="Update customer"/>
+            <column name="name_group" value="Customer"/>
+            <column name="p_code" value="CUS_U"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 08:07:55"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 08:07:55"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission">
+            <column name="id" valueNumeric="8233709703036928"/>
+            <column name="action" value="/v1/customer/delete"/>
+            <column name="description" value="Delete customer"/>
+            <column name="name" value="Delete customer"/>
+            <column name="name_group" value="Customer"/>
+            <column name="p_code" value="CUS_D"/>
+            <column name="show_menu" valueNumeric="0"/>
+            <column name="status" valueNumeric="1"/>
+            <column name="created_by" value="admin"/>
+            <column name="created_date" valueDate="2025-02-24 08:08:09"/>
+            <column name="modified_by" value="admin"/>
+            <column name="modified_date" valueDate="2025-02-24 08:08:09"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="Authentication" id="1740192929334-16">
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233689553108992"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233690468450304"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233691268022272"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233691834580992"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233693160636416"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233700446535680"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233701385535488"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233701845598208"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233702345506816"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233702766182400"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233704252768256"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233704648540160"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233705300000768"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233705754656768"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233706302078976"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233707728011264"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233708185452544"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233708655968256"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233709243170816"/>
+        </insert>
+
+        <insert tableName="db_user_base_permission_group">
+            <column name="group_id" valueNumeric="15"/>
+            <column name="permission_id" valueNumeric="8233709703036928"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

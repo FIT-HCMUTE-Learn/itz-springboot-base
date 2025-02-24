@@ -1,27 +1,25 @@
 package com.base.auth.form.nation;
 
-import com.base.auth.validation.NationKind;
+import com.base.auth.validation.NationType;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-
 @Data
 public class UpdateNationForm {
-    @NotNull(message = "id cant not be null")
     @ApiModelProperty(name = "id", required = true)
+    @NotNull(message = "id can not be null")
     private Long id;
-    @NotEmpty(message = "name cant not be null")
-    @ApiModelProperty(name = "name", required = true)
+
+    @ApiModelProperty(name = "name", required = false)
     private String name;
-    @NotEmpty(message = "postCode cant not be null")
-    @ApiModelProperty(name = "postCode", required = true)
-    private String postCode;
-    @NotNull(message = "status cant not be null")
-    @ApiModelProperty(name = "status", required = true)
-    private Long status;
-    @ApiModelProperty(name = "parentId")
-    private Long parentId;
+
+    @ApiModelProperty(name = "description", required = false)
+    private String description;
+
+    @ApiModelProperty(name = "type", required = false)
+    @NationType(allowNull = true)
+    private Integer type;
 }

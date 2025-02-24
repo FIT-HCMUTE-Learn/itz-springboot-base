@@ -788,20 +788,6 @@
             <column name="modified_by" value="admin"/>
             <column name="modified_date" valueDate="2023-09-30T04:44:50"/>
         </insert>
-        <insert tableName="db_user_base_permission">
-            <column name="id" valueNumeric="6837710895349760"/>
-            <column name="name" value="Get category"/>
-            <column name="action" value="/v1/category/get"/>
-            <column name="show_menu" valueBoolean="false"/>
-            <column name="description" value="Get category"/>
-            <column name="name_group" value="Category"/>
-            <column name="p_code" value="CA_V"/>
-            <column name="status" valueNumeric="1"/>
-            <column name="created_by" value="admin"/>
-            <column name="created_date" valueDate="2023-10-20T06:06:27"/>
-            <column name="modified_by" value="admin"/>
-            <column name="modified_date" valueDate="2023-10-20T06:06:27"/>
-        </insert>
     </changeSet>
     <changeSet author="Authentication" id="1740192929334-15">
         <insert tableName="db_user_base_account">
@@ -999,10 +985,6 @@
         <insert tableName="db_user_base_permission_group">
             <column name="group_id" valueNumeric="16"/>
             <column name="permission_id" valueNumeric="6778614941024277"/>
-        </insert>
-        <insert tableName="db_user_base_permission_group">
-            <column name="group_id" valueNumeric="16"/>
-            <column name="permission_id" valueNumeric="6837710895349760"/>
         </insert>
         <insert tableName="db_user_base_permission_group">
             <column name="group_id" valueNumeric="112"/>

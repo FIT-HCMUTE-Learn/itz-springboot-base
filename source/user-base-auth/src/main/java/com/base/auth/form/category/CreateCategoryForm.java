@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @ApiModel
 public class CreateCategoryForm {
-    @NotEmpty(message = "name cant not be null")
+    @NotEmpty(message = "ame can not be null")
     @ApiModelProperty(name = "name", required = true)
     private String name;
 

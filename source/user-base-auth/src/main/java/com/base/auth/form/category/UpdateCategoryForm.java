@@ -11,11 +11,11 @@ import javax.validation.constraints.NotNull;
 @ApiModel
 public class UpdateCategoryForm {
 
-    @NotNull(message = "categoryId cant not be null")
-    @ApiModelProperty(name = "categoryId", required = true)
+    @NotNull(message = "category id cant not be null")
+    @ApiModelProperty(name = "category id", required = true)
     private Long categoryId;
 
-    @NotEmpty(message = "name cant not be null")
+    @NotEmpty(message = "name can not be null")
     @ApiModelProperty(name = "name", required = true)
     private String name;
 

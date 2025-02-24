@@ -10,8 +10,8 @@ import javax.validation.constraints.NotNull;
 @Data
 @ApiModel
 public class CreateNewsForm {
-    @NotNull(message = "categoryId can not be null")
-    @ApiModelProperty(name = "categoryId", required = true)
+    @NotNull(message = "category id can not be null")
+    @ApiModelProperty(name = "category id", required = true)
     private Long categoryId;
 
     @NotEmpty(message = "title can not empty")
