@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class ServiceDetailDto {
-
     private Long id;
     private String careerName;
     private String address;

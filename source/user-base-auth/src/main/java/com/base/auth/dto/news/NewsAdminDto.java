@@ -6,7 +6,6 @@ import com.base.auth.model.Category;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-
 @Data
 public class NewsAdminDto extends ABasicAdminDto {
 

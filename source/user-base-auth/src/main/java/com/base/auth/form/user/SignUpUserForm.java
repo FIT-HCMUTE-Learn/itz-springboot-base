@@ -12,7 +12,6 @@ import java.util.Date;
 @Data
 @ApiModel
 public class SignUpUserForm {
-
     @ApiModelProperty(name = "email")
     @Email
     private String email;
@@ -28,5 +27,4 @@ public class SignUpUserForm {
     private String avatarPath;
     @ApiModelProperty(name = "birthday")
     private Date birthday;
-
 }

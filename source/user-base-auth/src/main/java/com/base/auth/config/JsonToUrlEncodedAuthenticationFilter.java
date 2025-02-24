@@ -43,7 +43,6 @@ public class JsonToUrlEncodedAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-
     private class RequestWrapper extends HttpServletRequestWrapper {
 
         private final Map<String, String[]> params;

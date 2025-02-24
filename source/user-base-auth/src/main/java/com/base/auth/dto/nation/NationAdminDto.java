@@ -4,7 +4,6 @@ import com.base.auth.dto.ABasicAdminDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-
 @Data
 public class NationAdminDto extends ABasicAdminDto {
     @ApiModelProperty(name = "name")

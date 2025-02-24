@@ -33,7 +33,6 @@ public class UpdateServiceForm {
     private String hotline;
     @ApiModelProperty(name = "settings")
     private String settings="{}";
-    
 
     @NotEmpty(message = "lang cant not be null")
     @ApiModelProperty(name = "lang", required = true)

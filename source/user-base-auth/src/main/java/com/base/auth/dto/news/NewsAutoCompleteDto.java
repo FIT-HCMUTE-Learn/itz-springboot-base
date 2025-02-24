@@ -1,6 +1,5 @@
 package com.base.auth.dto.news;
 
-
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

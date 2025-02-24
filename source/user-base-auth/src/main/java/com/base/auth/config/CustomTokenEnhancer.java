@@ -1,8 +1,6 @@
 package com.base.auth.config;
 
-import com.base.auth.constant.UserBaseConstant;
 import com.base.auth.dto.AccountForTokenDto;
-import com.base.auth.dto.UserForTokenDto;
 import com.base.auth.model.Permission;
 import com.base.auth.utils.ZipUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;

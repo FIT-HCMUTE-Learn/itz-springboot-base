@@ -18,7 +18,9 @@ import java.util.HashSet;
 @Profile({"local", "dev", "staging"})
 @Import({springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration.class})
 public class SwaggerConfig {
+
     HashSet<String> consumesAndProduces = new HashSet<>(Arrays.asList("application/json"));
+
     @Bean
     public Docket  storeAuthApi() {
         return new Docket(DocumentationType.SWAGGER_2)

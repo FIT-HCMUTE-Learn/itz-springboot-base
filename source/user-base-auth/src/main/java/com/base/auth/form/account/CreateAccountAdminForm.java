@@ -35,5 +35,4 @@ public class CreateAccountAdminForm {
     @NotNull(message = "groupId cant not be null")
     @ApiModelProperty(name = "groupId", required = true)
     private Long groupId;
-
 }

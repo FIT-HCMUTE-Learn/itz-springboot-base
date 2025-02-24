@@ -16,7 +16,6 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
         return new OAuth2MethodSecurityExpressionHandler();
     }
 
-
     @Bean
     public GrantedAuthorityDefaults grantedAuthorityDefaults() {
         return new GrantedAuthorityDefaults("");

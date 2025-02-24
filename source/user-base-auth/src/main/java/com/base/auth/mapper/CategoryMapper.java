@@ -8,8 +8,8 @@ import org.mapstruct.*;
 
 import java.util.List;
 
-
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CategoryMapper {
 
     @Mapping(source = "name", target = "name")

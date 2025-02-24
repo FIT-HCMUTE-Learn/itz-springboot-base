@@ -27,5 +27,4 @@ public class UpdateCategoryForm {
 
     @ApiModelProperty(name = "ordering", required = false)
     private Integer ordering;
-
 }

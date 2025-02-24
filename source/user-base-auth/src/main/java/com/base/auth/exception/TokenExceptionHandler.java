@@ -8,5 +8,4 @@ public class TokenExceptionHandler extends RuntimeException{
     public TokenExceptionHandler(String exception) {
         super(exception);
     }
-
 }

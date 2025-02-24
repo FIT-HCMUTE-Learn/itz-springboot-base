@@ -14,7 +14,6 @@ public class ThreadConfig {
     @Value("${thread.pool.queue.size:100}")
     private Integer threadQueuePoolSize;
 
-
     @Bean(name = "threadPoolExecutor")
     public TaskExecutor threadPoolTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
@@ -25,7 +24,6 @@ public class ThreadConfig {
         executor.initialize();
         return executor;
     }
-
 
     /**
      *

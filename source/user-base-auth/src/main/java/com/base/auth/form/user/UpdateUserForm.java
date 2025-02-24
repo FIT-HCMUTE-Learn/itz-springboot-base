@@ -12,7 +12,6 @@ import java.util.Date;
 @Data
 @ApiModel
 public class UpdateUserForm {
-
     @NotNull(message = "id cant not be null")
     @ApiModelProperty(name = "id", required = true)
     private Long  id;
