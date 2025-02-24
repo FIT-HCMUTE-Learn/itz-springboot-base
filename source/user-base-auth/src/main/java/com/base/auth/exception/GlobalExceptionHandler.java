@@ -40,6 +40,7 @@ import java.util.Map;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private static final String BAD_REQUEST = "BAD REQUEST";
     final ObjectMapper mapper = new ObjectMapper();
+
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<ApiMessageDto<String>> globalExceptionHandler(NotFoundException ex) {
         log.error(""+ex.getMessage(), ex);
@@ -125,7 +126,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         apiMessageDto.setCode(ErrorCode.ERROR_DB_QUERY);
         return new ResponseEntity<>(apiMessageDto, HttpStatus.BAD_REQUEST);
     }
-
 
     @ExceptionHandler({TokenExceptionHandler.class})
     public ResponseEntity<ApiMessageDto<String>> invalidTokenHandler(TokenExceptionHandler ex, WebRequest request) {

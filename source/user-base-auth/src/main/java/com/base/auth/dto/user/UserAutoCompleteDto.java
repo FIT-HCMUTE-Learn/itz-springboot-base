@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 public class UserAutoCompleteDto {
-
     private Long id;
     private AccountAutoCompleteDto accountAutoCompleteDto;
 }

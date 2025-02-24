@@ -25,7 +25,4 @@ public class AccountForTokenDto {
 //    private Date lastLogin;
 //    @ApiModelProperty(name = "avatar")
 //    private String avatar;
-
-
-
 }

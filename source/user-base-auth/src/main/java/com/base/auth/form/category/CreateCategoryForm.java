@@ -29,5 +29,4 @@ public class CreateCategoryForm {
     @ApiModelProperty(name = "kind", required = true)
     @CategoryKind(allowNull = false)
     private Integer kind;
-
 }

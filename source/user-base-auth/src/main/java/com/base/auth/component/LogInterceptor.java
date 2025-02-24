@@ -15,8 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LogInterceptor implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-                             Object handler) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         if (DispatcherType.REQUEST.name().equals(request.getDispatcherType().name())
                 && request.getMethod().equals(HttpMethod.GET.name())) {
 
@@ -50,7 +49,7 @@ public class LogInterceptor implements HandlerInterceptor {
      */
     private static String getUrl(HttpServletRequest req) {
         String reqUrl = req.getRequestURL().toString();
-        String queryString = req.getQueryString();   // d=789
+        String queryString = req.getQueryString();   // d = 789
         if (!StringUtils.isEmpty(queryString)) {
             reqUrl += "?" + queryString;
         }

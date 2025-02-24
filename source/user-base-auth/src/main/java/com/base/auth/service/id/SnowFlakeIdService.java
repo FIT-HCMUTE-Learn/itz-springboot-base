@@ -24,8 +24,6 @@ import java.net.UnknownHostException;
 public class SnowFlakeIdService {
     private static SnowFlakeIdService instance;
 
-
-
     // ============================== 30K unique ID / seconds===========================================
     /** Start time cut (2015-01-01) */
     private final long twepoch = 1489111610226L;
@@ -69,7 +67,6 @@ public class SnowFlakeIdService {
 
     /** Time to last generated ID */
     private long lastTimestamp = -1L;
-
 
 
     // Create SequenceGenerator with a nodeId

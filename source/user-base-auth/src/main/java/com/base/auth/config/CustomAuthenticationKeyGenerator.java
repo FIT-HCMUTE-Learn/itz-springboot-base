@@ -16,11 +16,8 @@ import java.util.Map;
 
 @Component
 public class CustomAuthenticationKeyGenerator implements AuthenticationKeyGenerator {
-
     private static final String CLIENT_ID = "client_id";
-
     private static final String SCOPE = "scope";
-
     private static final String USERNAME = "username";
     private static final String DEVICE_ID = "device_id";
     private static final String TENANT = "tenant";
@@ -55,5 +52,4 @@ public class CustomAuthenticationKeyGenerator implements AuthenticationKeyGenera
         byte[] bytes = digest.digest(values.toString().getBytes(StandardCharsets.UTF_8));
         return String.format("%032x", new BigInteger(1, bytes));
     }
-
 }

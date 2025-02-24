@@ -26,5 +26,4 @@ public class ApiResponse<T> implements Serializable {
         this.httpCode = httpCode.value();
         this.message = message;
     }
-
 }

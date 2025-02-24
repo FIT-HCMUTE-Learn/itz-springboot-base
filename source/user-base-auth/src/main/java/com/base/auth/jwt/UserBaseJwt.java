@@ -12,7 +12,6 @@ public class UserBaseJwt implements Serializable {
     public static final String DELIM = "\\|";
     public static final String EMPTY_STRING = "<>";
     private Long tokenId;
-
     private Long accountId = -1L;
     private Long storeId = -1L;
     private String kind = EMPTY_STRING;//token kind
@@ -24,10 +23,6 @@ public class UserBaseJwt implements Serializable {
     private Long orderId = -1L;
     private Boolean isSuperAdmin = false;
     private String tenantId = EMPTY_STRING;
-
-
-
-
 
     public String toClaim(){
         if(deviceId == null){

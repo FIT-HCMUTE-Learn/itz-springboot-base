@@ -16,7 +16,6 @@ public class DateUtils {
 
 	public static final String FORMAT_DATE = "dd/MM/yyyy HH:mm:ss";
 
-
 	private DateUtils(){
 
 	}

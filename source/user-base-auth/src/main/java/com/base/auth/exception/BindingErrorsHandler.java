@@ -30,6 +30,7 @@ import java.util.List;
 @Slf4j
 public class BindingErrorsHandler {
     final ObjectMapper mapper = new ObjectMapper();
+
     @Before("@within(org.springframework.web.bind.annotation.RestController)")
     public void logBefore(JoinPoint joinPoint) {
         Arrays.stream(joinPoint.getArgs())

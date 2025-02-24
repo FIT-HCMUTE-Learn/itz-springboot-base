@@ -46,5 +46,4 @@ public class CustomTokenGranter extends AbstractTokenGranter {
             throw new InvalidTokenException("account or tenant invalid");
         }
     }
-
 }

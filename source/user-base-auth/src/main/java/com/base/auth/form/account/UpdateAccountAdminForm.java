@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 @Data
 @ApiModel
 public class UpdateAccountAdminForm {
-
     @NotNull(message = "id cant not be null")
     @ApiModelProperty(name = "id", required = true)
     private Long id;

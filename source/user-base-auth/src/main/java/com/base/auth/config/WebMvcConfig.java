@@ -80,6 +80,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
         objectMapper.setDateFormat(format);
         return objectMapper;
     }
-
-
 }

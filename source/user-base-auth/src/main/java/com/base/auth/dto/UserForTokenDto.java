@@ -1,11 +1,9 @@
 package com.base.auth.dto;
 
-
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
-
 
 @Data
 public class UserForTokenDto {

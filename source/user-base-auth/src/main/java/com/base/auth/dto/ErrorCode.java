@@ -12,7 +12,7 @@ public class ErrorCode {
     public static final String GENERAL_ERROR_ACCOUNT_NOT_FOUND = "ERROR-GENERAL-0005";
 
     /**
-     * Starting error code Account
+     * Starting error code ACCOUNT
      * */
     public static final String ACCOUNT_ERROR_UNKNOWN = "ERROR-ACCOUNT-0000";
     public static final String ACCOUNT_ERROR_USERNAME_EXIST = "ERROR-ACCOUNT-0001";
@@ -29,7 +29,7 @@ public class ErrorCode {
     public static final String ACCOUNT_ERROR_NOT_ALLOW_DELETE_SUPPER_ADMIN = "ERROR-ACCOUNT-0012";
 
     /**
-     * Starting error code Customer
+     * Starting error code CUSTOMER
      * */
     public static final String CUSTOMER_ERROR_UNKNOWN = "ERROR-CUSTOMER-0000";
     public static final String CUSTOMER_ERROR_EXIST = "ERROR-CUSTOMER-0002";
@@ -38,7 +38,7 @@ public class ErrorCode {
 
 
     /**
-     * Starting error code Store
+     * Starting error code STORE
      * */
     public static final String SERVICE_ERROR_UNKNOWN = "ERROR-SERVICE-0000";
     public static final String SERVICE_ERROR_NOT_FOUND = "ERROR-SERVICE-0001";
@@ -51,6 +51,7 @@ public class ErrorCode {
      * Starting error code SHOP ACCOUNT
      * */
     public static final String SHOP_ACCOUNT_ERROR_UNKNOWN = "ERROR-SHOP_ACCOUNT-0000";
+
     /**
      * Starting error code NATION
      * */
@@ -59,6 +60,7 @@ public class ErrorCode {
     public static final String NATION_ERROR_PARENT_INVALID = "ERROR-NATION-0003";
     public static final String NATION_ERROR_NOT_ALLOW_UPDATE_TYPE = "ERROR-NATION-0004";
     public static final String NATION_ERROR_CANT_DELETE_RELATIONSHIP_WITH_ADDRESS = "ERROR-NATION-0005";
+
     /**
      * Starting error code ADDRESS
      * */
@@ -71,12 +73,13 @@ public class ErrorCode {
     public static final String CATEGORY_ERROR_EXIST = "ERROR-CATEGORY-0001";
 
     /**
-     * Starting error code News
+     * Starting error code NEWS
      * */
     public static final String NEWS_ERROR_NOT_FOUND = "ERROR-NEWS-0000";
     public static final String NEWS_ERROR_EXISTED = "ERROR-NEWS-0001";
+
     /**
-     * Starting error code Settings
+     * Starting error code SETTINGS
      * */
     public static final String SETTINGS_ERROR_NOT_FOUND = "ERROR-SETTING-0000";
     public static final String SETTINGS_ERROR_SETTING_KEY_EXISTED = "ERROR-SETTING-0001";

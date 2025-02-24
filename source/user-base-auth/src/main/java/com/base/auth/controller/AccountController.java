@@ -120,7 +120,6 @@ public class AccountController extends ABasicController{
         return apiMessageDto;
     }
 
-
     @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ACC_V')")
     public ApiResponse<Account> get(@PathVariable("id") Long id) {

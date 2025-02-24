@@ -51,7 +51,4 @@ public interface AccountMapper {
     @Mapping(source = "avatarPath",target = "avatarPath")
     @BeanMapping(ignoreByDefault = true)
     void fromUpdateUserFormToEntity(UpdateUserForm updateUserForm, @MappingTarget Account account );
-
-
-
 }
