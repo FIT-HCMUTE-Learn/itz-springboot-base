@@ -9,6 +9,7 @@ import com.base.auth.form.nation.UpdateNationForm;
 import com.base.auth.mapper.NationMapper;
 import com.base.auth.model.Nation;
 import com.base.auth.model.criteria.NationCriteria;
+import com.base.auth.repository.CustomerRepository;
 import com.base.auth.repository.NationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,7 +28,8 @@ import java.util.List;
 public class NationController {
     @Autowired
     private NationRepository nationRepository;
-    
+    @Autowired
+    private CustomerRepository customerRepository;
     @Autowired
     private NationMapper nationMapper;
 
@@ -42,7 +44,6 @@ public class NationController {
                 nationPage.getTotalElements(),
                 nationPage.getTotalPages()
         );
-
         ApiMessageDto<ResponseListDto<List<NationDto>>> apiMessageDto = new ApiMessageDto<>();
         apiMessageDto.setData(result);
         apiMessageDto.setMessage("Get nation list successfully");
@@ -62,7 +63,6 @@ public class NationController {
             apiMessageDto.setMessage("Nation not found");
             return apiMessageDto;
         }
-
         apiMessageDto.setData(nationMapper.fromEntityToNationDto(nation));
         apiMessageDto.setMessage("Get nation successfully");
 
@@ -93,7 +93,6 @@ public class NationController {
             apiMessageDto.setMessage("Nation not found");
             return apiMessageDto;
         }
-
         nationMapper.updateFromUpdateNationForm(nation, updateNationForm);
         nationRepository.save(nation);
         apiMessageDto.setMessage("Update nation successfully");
@@ -111,6 +110,12 @@ public class NationController {
             apiMessageDto.setResult(false);
             apiMessageDto.setCode(ErrorCode.NATION_ERROR_NOT_FOUND);
             apiMessageDto.setMessage("Nation not found");
+            return apiMessageDto;
+        }
+        if (customerRepository.countCustomerByNationId(nation.getId()) > 0) {
+            apiMessageDto.setResult(false);
+            apiMessageDto.setCode(ErrorCode.NATION_ERROR_CANT_DELETE_RELATIONSHIP_WITH_CUSTOMER);
+            apiMessageDto.setMessage("There are still customers in the nation");
             return apiMessageDto;
         }
 

@@ -281,17 +281,6 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.liquibase</groupId>
 				<artifactId>liquibase-maven-plugin</artifactId>
 				<version>${liquibase.version}</version>
@@ -300,10 +289,10 @@
 					<diffChangeLogFile>${basedir}/src/main/resources/liquibase/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
 					<outputChangeLogFile>${basedir}/src/main/resources/liquibase/db.changelog-1.0.0.xml</outputChangeLogFile>
 					<driver>com.mysql.cj.jdbc.Driver</driver>
-					<url>jdbc:mysql://localhost:3306/db_user_base_auth</url>
+					<url>jdbc:mysql://localhost:3306/db_user_base_auth?useSSL=false&amp;allowPublicKeyRetrieval=true</url>
 					<username>root</username>
 					<password>123456</password>
-					<referenceUrl>hibernate:spring:com.base.auth.model,com.base.auth.repository?dialect=org.hibernate.dialect.MySQL8InnoDBDialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
+					<referenceUrl>hibernate:spring:com.base.auth.model?dialect=org.hibernate.dialect.MySQL8Dialect</referenceUrl>
 					<verbose>true</verbose>
 					<logging>debug</logging>
 					<changeSetAuthor>Authentication</changeSetAuthor>
@@ -371,7 +360,6 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

@@ -10,7 +10,7 @@ import java.util.Date;
 @Data
 public class CustomerDto {
     @ApiModelProperty(name = "id")
-    private String id;
+    private Long id;
     @ApiModelProperty(name = "account")
     private AccountDto account;
     @ApiModelProperty(name = "birthday")

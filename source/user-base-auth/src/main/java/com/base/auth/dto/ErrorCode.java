@@ -60,6 +60,7 @@ public class ErrorCode {
     public static final String NATION_ERROR_PARENT_INVALID = "ERROR-NATION-0003";
     public static final String NATION_ERROR_NOT_ALLOW_UPDATE_TYPE = "ERROR-NATION-0004";
     public static final String NATION_ERROR_CANT_DELETE_RELATIONSHIP_WITH_ADDRESS = "ERROR-NATION-0005";
+    public static final String NATION_ERROR_CANT_DELETE_RELATIONSHIP_WITH_CUSTOMER = "ERROR-NATION-0006";
 
     /**
      * Starting error code ADDRESS
