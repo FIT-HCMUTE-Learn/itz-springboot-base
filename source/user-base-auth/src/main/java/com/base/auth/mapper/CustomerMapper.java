@@ -26,6 +26,7 @@ public interface CustomerMapper {
     @Named("updateFromUpdateCustomerForm")
     void updateFromUpdateCustomerForm(@MappingTarget Customer customer, UpdateCustomerForm updateCustomerForm);
 
+    @Mapping(source = "id", target = "id")
     @Mapping(source = "account", target = "account", qualifiedByName = "fromAccountToDto")
     @Mapping(source = "birthday", target = "birthday")
     @Mapping(source = "gender", target = "gender")

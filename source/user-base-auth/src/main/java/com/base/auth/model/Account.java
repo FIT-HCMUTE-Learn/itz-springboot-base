@@ -25,10 +25,10 @@ public class Account extends Auditable<String> {
     private Long id;
     private int kind;
     private String username;
-    private String phone;
-    private String email;
     @JsonIgnore
     private String password;
+    private String phone;
+    private String email;
     @Column(name = "full_name")
     private String fullName;
     @ManyToOne(fetch = FetchType.LAZY)
