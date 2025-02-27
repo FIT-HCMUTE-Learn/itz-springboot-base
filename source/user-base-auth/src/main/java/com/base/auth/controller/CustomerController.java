@@ -12,7 +12,7 @@ import com.base.auth.model.*;
 import com.base.auth.model.criteria.CustomerCriteria;
 import com.base.auth.repository.*;
 import com.base.auth.service.UserBaseApiService;
-import org.apache.commons.lang3.RandomStringUtils;
+import com.base.auth.utils.CodeGeneratorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -49,6 +49,8 @@ public class CustomerController {
     private UserBaseApiService userBaseApiService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private CodeGeneratorUtils codeGeneratorUtils;
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('CUS_L')")
@@ -146,10 +148,7 @@ public class CustomerController {
 
         // Create Cart
         Cart cart = new Cart();
-        String cartCode;
-        do {
-            cartCode = RandomStringUtils.randomAlphanumeric(6).toUpperCase();
-        } while (cartRepository.existsByCode(cartCode));
+        String cartCode = codeGeneratorUtils.generateUniqueCode(Cart.class, "code", 6);
         cart.setCode(cartCode);
         cart.setCustomer(customer);
         cartRepository.save(cart);

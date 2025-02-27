@@ -52,4 +52,49 @@
     <changeSet author="thanh (generated)" id="1740554175071-12">
         <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="db_user_base_cart_item" constraintName="FKk3unm2hqllpscan5kjwrb0k69" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_user_base_product" validate="true"/>
     </changeSet>
+
+    <changeSet author="thanh (generated)" id="1740671478880-6">
+        <createTable tableName="db_user_base_order">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_user_base_orderPK"/>
+            </column>
+            <column name="code" type="VARCHAR(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="INT"/>
+            <column name="totalMoney" type="DOUBLE PRECISION"/>
+            <column name="totalSaleOff" type="DOUBLE PRECISION"/>
+            <column name="customer_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="thanh (generated)" id="1740671478880-7">
+        <createTable tableName="db_user_base_order_item">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_user_base_order_itemPK"/>
+            </column>
+            <column name="quantity" type="INT"/>
+            <column name="saleOff" type="INT"/>
+            <column name="singlePrice" type="DOUBLE PRECISION"/>
+            <column name="order_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="thanh (generated)" id="1740671478880-8">
+        <addUniqueConstraint columnNames="code" constraintName="UC_DB_USER_BASE_ORDERCODE_COL" tableName="db_user_base_order"/>
+    </changeSet>
+    <changeSet author="thanh (generated)" id="1740671478880-9">
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="db_user_base_order_item" constraintName="FK75mm45h0hikk7js0td6p3sl0t" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_user_base_order" validate="true"/>
+    </changeSet>
+    <changeSet author="thanh (generated)" id="1740671478880-10">
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="db_user_base_order_item" constraintName="FKg8yxypd7cdcft7uhjm20r0wgp" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_user_base_product" validate="true"/>
+    </changeSet>
+    <changeSet author="thanh (generated)" id="1740671478880-11">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="db_user_base_order" constraintName="FKl49a6h7k2cnwwhwm7ej4rgc2c" deferrable="false" initiallyDeferred="false" referencedColumnNames="account_id" referencedTableName="db_user_base_customer" validate="true"/>
+    </changeSet>
 </databaseChangeLog>

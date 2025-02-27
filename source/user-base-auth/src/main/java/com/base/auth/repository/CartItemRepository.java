@@ -13,18 +13,16 @@ import java.util.List;
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     boolean existsByProductId(Long id);
     void deleteByCartId(Long id);
+    List<CartItem> findByCartId(Long id);
 
-    // Delete CartItem not in the new productIds
     @Modifying
     @Query("DELETE FROM CartItem ci WHERE ci.cart.id = :cartId AND ci.product.id NOT IN :productIds")
     void deleteCartItemsNotIn(@Param("cartId") Long cartId, @Param("productIds") List<Long> productIds);
 
-    // Check Product in Cart
-    @Query("SELECT COUNT(ci) > 0 FROM CartItem ci WHERE ci.cart.id = :cartId AND ci.product.id = :productId")
-    boolean existsByCartAndProduct(@Param("cartId") Long cartId, @Param("productId") Long productId);
+    @Query("SELECT ci FROM CartItem ci WHERE ci.cart.id = :cartId AND ci.product.id IN :productIds")
+    List<CartItem> findByCartIdAndProductIds(@Param("cartId") Long cartId, @Param("productIds") List<Long> productIds);
 
-    // Increment follow new quantity
     @Modifying
     @Query("UPDATE CartItem ci SET ci.quantity = ci.quantity + :quantity WHERE ci.cart.id = :cartId AND ci.product.id = :productId")
-    void incrementQuantity(@Param("cartId") Long cartId, @Param("productId") Long productId, @Param("quantity") Integer quantity);
+    void updateQuantity(@Param("cartId") Long cartId, @Param("productId") Long productId, @Param("quantity") Integer quantity);
 }

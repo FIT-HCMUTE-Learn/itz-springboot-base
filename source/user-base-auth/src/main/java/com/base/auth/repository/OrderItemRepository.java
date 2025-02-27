@@ -1,10 +1,9 @@
 package com.base.auth.repository;
 
-import com.base.auth.model.Cart;
+import com.base.auth.model.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CartRepository extends JpaRepository<Cart, Long> {
-    Cart findByCustomerId(Long id);
+public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 }

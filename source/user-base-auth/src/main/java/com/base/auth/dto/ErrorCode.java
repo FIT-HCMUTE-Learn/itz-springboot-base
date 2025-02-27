@@ -90,6 +90,14 @@ public class ErrorCode {
      * Starting error code CART
      * */
     public static final String CART_ERROR_NOT_FOUND = "ERROR-CART-0000";
+    public static final String CART_ERROR_EMPTY = "ERROR-CART-0001";
+
+    /**
+     * Starting error code ORDER
+     * */
+    public static final String ORDER_ERROR_NOT_FOUND = "ERROR-ORDER-0000";
+    public static final String ORDER_ERROR_INVALID_STATE = "ERROR-ORDER-0001";
+    public static final String ORDER_ERROR_INVALID_TRANSITION = "ERROR-ORDER-0002";
 
     /**
      * Starting error code SETTINGS
