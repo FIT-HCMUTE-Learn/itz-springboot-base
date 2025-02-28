@@ -15,7 +15,7 @@ public class UserBaseJwt implements Serializable {
     private Long accountId = -1L;
     private Long storeId = -1L;
     private String kind = EMPTY_STRING;//token kind
-    private String pemission = EMPTY_STRING;
+    private String permission = EMPTY_STRING;
     private Long deviceId = -1L;// id cua thiet bi, lưu ở table device để get firebase url..
     private Integer userKind = -1; //loại user là admin hay là gì
     private String username = EMPTY_STRING;// username hoac order code
@@ -40,7 +40,7 @@ public class UserBaseJwt implements Serializable {
         if(orderId == null){
             orderId = -1L;
         }
-        return ZipUtils.zipString(accountId+DELIM+ storeId +DELIM+kind+DELIM+pemission+DELIM+deviceId+DELIM+userKind+DELIM+username+DELIM+tabletKind+DELIM+orderId+DELIM+isSuperAdmin+DELIM+tenantId) ;
+        return ZipUtils.zipString(accountId+DELIM+ storeId +DELIM+kind+DELIM+permission+DELIM+deviceId+DELIM+userKind+DELIM+username+DELIM+tabletKind+DELIM+orderId+DELIM+isSuperAdmin+DELIM+tenantId) ;
     }
 
     public static UserBaseJwt decode(String input){
@@ -52,7 +52,7 @@ public class UserBaseJwt implements Serializable {
                 result.setAccountId(parserLong(items[0]));
                 result.setStoreId(parserLong(items[1]));
                 result.setKind(checkString(items[2]));
-                result.setPemission(checkString(items[3]));
+                result.setPermission(checkString(items[3]));
                 result.setDeviceId(parserLong(items[4]));
                 result.setUserKind(parserInt(items[5]));
                 result.setUsername(checkString(items[6]));

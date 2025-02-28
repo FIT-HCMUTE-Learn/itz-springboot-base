@@ -8,16 +8,11 @@ import com.base.auth.dto.customer.CustomerDto;
 import com.base.auth.form.customer.CreateCustomerForm;
 import com.base.auth.form.customer.UpdateCustomerForm;
 import com.base.auth.mapper.CustomerMapper;
-import com.base.auth.model.Account;
-import com.base.auth.model.Customer;
-import com.base.auth.model.Group;
-import com.base.auth.model.Nation;
+import com.base.auth.model.*;
 import com.base.auth.model.criteria.CustomerCriteria;
-import com.base.auth.repository.AccountRepository;
-import com.base.auth.repository.CustomerRepository;
-import com.base.auth.repository.GroupRepository;
-import com.base.auth.repository.NationRepository;
+import com.base.auth.repository.*;
 import com.base.auth.service.UserBaseApiService;
+import com.base.auth.utils.CodeGeneratorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,11 +40,17 @@ public class CustomerController {
     @Autowired
     private NationRepository nationRepository;
     @Autowired
+    private CartRepository cartRepository;
+    @Autowired
+    private CartItemRepository cartItemRepository;
+    @Autowired
     private CustomerMapper customerMapper;
     @Autowired
     private UserBaseApiService userBaseApiService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private CodeGeneratorUtils codeGeneratorUtils;
 
     @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('CUS_L')")
@@ -93,6 +94,7 @@ public class CustomerController {
     public ApiMessageDto<String> createCustomer(@Valid @RequestBody CreateCustomerForm createCustomerForm) {
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
 
+        // Create Account
         if (accountRepository.existsByUsername(createCustomerForm.getUsername())) {
             apiMessageDto.setResult(false);
             apiMessageDto.setCode(ErrorCode.ACCOUNT_ERROR_USERNAME_EXIST);
@@ -112,6 +114,7 @@ public class CustomerController {
         account.setAvatarPath(createCustomerForm.getAvatarPath());
         Account savedAccount = accountRepository.save(account);
 
+        // Create Customer
         Nation province = nationRepository.findByIdAndType(createCustomerForm.getProvinceId(),
                 UserBaseConstant.NATION_KIND_PROVINCE).orElseThrow(null);
         if (province == null){
@@ -136,15 +139,22 @@ public class CustomerController {
             apiMessageDto.setMessage("Commune not found");
             return apiMessageDto;
         }
-
         Customer customer = customerMapper.fromCreateCustomerFormToEntity(createCustomerForm);
         customer.setAccount(savedAccount);
         customer.setProvince(province);
         customer.setDistrict(district);
         customer.setCommune(commune);
         customerRepository.save(customer);
-        apiMessageDto.setMessage("Create customer successfully");
 
+        // Create Cart
+        Cart cart = new Cart();
+        String cartCode = codeGeneratorUtils.generateUniqueCode(Cart.class, "code", 6);
+        cart.setCode(cartCode);
+        cart.setCustomer(customer);
+        cartRepository.save(cart);
+
+        // Complete
+        apiMessageDto.setMessage("Create customer successfully");
         return apiMessageDto;
     }
 
@@ -162,6 +172,7 @@ public class CustomerController {
             return apiMessageDto;
         }
 
+        // Update Account
         Account account = customer.getAccount();
         if (!account.getUsername().equals(updateCustomerForm.getUsername())) {
             if (accountRepository.existsByUsername(updateCustomerForm.getUsername())) {
@@ -181,13 +192,13 @@ public class CustomerController {
         account.setFullName(updateCustomerForm.getFullName());
         if (StringUtils.isNoneBlank(updateCustomerForm.getAvatarPath())) {
             if(!updateCustomerForm.getAvatarPath().equals(account.getAvatarPath())){
-                //delete old image
                 userBaseApiService.deleteFile(account.getAvatarPath());
             }
             account.setAvatarPath(updateCustomerForm.getAvatarPath());
         }
         accountRepository.save(account);
 
+        // Update Customer
         if (!updateCustomerForm.getProvinceId().equals(customer.getProvince().getId())) {
             Nation province = nationRepository.findByIdAndType(updateCustomerForm.getProvinceId(),
                     UserBaseConstant.NATION_KIND_PROVINCE).orElseThrow(null);
@@ -230,6 +241,7 @@ public class CustomerController {
 
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('CUS_D')")
+    @Transactional
     public ApiMessageDto<String> deleteCustomer(@PathVariable Long id) {
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
 
@@ -240,7 +252,16 @@ public class CustomerController {
             apiMessageDto.setMessage("Customer not found");
             return apiMessageDto;
         }
+
+        // Delete Cart
+        Cart cart = cartRepository.findByCustomerId(id);
+        if (cart != null) {
+            cartItemRepository.deleteByCartId(cart.getId());
+            cartRepository.delete(cart);
+        }
+        // Delete Account
         accountRepository.deleteById(customer.getAccount().getId());
+        // Delete Customer
         customerRepository.deleteById(id);
         apiMessageDto.setMessage("Delete customer successfully");
 

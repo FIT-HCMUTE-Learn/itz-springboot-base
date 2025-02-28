@@ -18,6 +18,12 @@ public class UserBaseConstant {
     public static final Integer NATION_KIND_DISTRICT = 1;
     public static final Integer NATION_KIND_COMMUNE = 2;
 
+    public static final Integer ORDER_STATE_BOOKING = 1;
+    public static final Integer ORDER_STATE_APPROVED = 2;
+    public static final Integer ORDER_STATE_DELIVERY = 3;
+    public static final Integer ORDER_STATE_DONE = 4;
+    public static final Integer ORDER_STATE_CANCEL = 5;
+
     public static final Integer CUSTOMER_GENDER_UNKNOWN = 0;
     public static final Integer CUSTOMER_GENDER_MALE = 1;
     public static final Integer CUSTOMER_GENDER_FEMALE = 2;
