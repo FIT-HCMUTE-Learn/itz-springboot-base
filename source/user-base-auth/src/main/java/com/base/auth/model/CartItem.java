@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(name = "db_user_base_cart_item")
 @Getter
 @Setter
-public class CartItem {
+public class CartItem extends Auditable<String> {
     @Id
     @GenericGenerator(name = "idGenerator", strategy = "com.base.auth.service.id.IdGenerator")
     @GeneratedValue(generator = "idGenerator")

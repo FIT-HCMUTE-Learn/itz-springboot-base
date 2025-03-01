@@ -27,7 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/product")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class ProductController {
+public class ProductController extends ABasicController{
     @Autowired
     private ProductRepository productRepository;
     @Autowired

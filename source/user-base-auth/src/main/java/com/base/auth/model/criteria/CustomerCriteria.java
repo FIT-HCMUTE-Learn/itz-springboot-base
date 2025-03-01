@@ -3,7 +3,6 @@ package com.base.auth.model.criteria;
 import com.base.auth.model.Customer;
 import lombok.Data;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -22,10 +21,6 @@ public class CustomerCriteria implements Serializable {
     private Date startBirthday;
     private Date endBirthday;
     private Integer gender;
-    private String address;
-    private Long provinceId;
-    private Long districtId;
-    private Long communeId;
 
     public Specification<Customer> getSpecification() {
         return new Specification<Customer>() {
@@ -49,18 +44,6 @@ public class CustomerCriteria implements Serializable {
                 }
                 if (getGender() != null) {
                     predicates.add(cb.equal(root.get("gender"), getAccountId()));
-                }
-                if (!StringUtils.isEmpty(getAddress())) {
-                    predicates.add(cb.like(cb.lower(root.get("address")), "%" + getAddress().toLowerCase() + "%"));
-                }
-                if (getProvinceId() != null) {
-                    predicates.add(cb.equal(root.get("province").get("id"), getProvinceId()));
-                }
-                if (getDistrictId() != null) {
-                    predicates.add(cb.equal(root.get("district").get("id"), getDistrictId()));
-                }
-                if (getCommuneId() != null) {
-                    predicates.add(cb.equal(root.get("commune").get("id"), getCommuneId()));
                 }
 
                 return cb.and(predicates.toArray(new Predicate[0]));

@@ -1,0 +1,318 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Authentication" id="1740843392980-4">
+        <createTable tableName="db_user_base_customer_address">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="db_user_base_customer_addressPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="isDefault" type="BIT"/>
+            <column name="type" type="INT"/>
+            <column name="commune_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="district_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="province_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-5">
+        <addColumn tableName="db_user_base_cart">
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-6">
+        <addColumn tableName="db_user_base_cart_item">
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-7">
+        <addColumn tableName="db_user_base_customer">
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-8">
+        <addColumn tableName="db_user_base_nation">
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-9">
+        <addColumn tableName="db_user_base_order">
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-10">
+        <addColumn tableName="db_user_base_order_item">
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-11">
+        <addColumn tableName="db_user_base_product">
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-12">
+        <addColumn tableName="db_user_base_cart">
+            <column name="created_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-13">
+        <addColumn tableName="db_user_base_cart_item">
+            <column name="created_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-14">
+        <addColumn tableName="db_user_base_customer">
+            <column name="created_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-15">
+        <addColumn tableName="db_user_base_nation">
+            <column name="created_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-16">
+        <addColumn tableName="db_user_base_order">
+            <column name="created_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-17">
+        <addColumn tableName="db_user_base_order_item">
+            <column name="created_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-18">
+        <addColumn tableName="db_user_base_product">
+            <column name="created_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-19">
+        <addColumn tableName="db_user_base_order">
+            <column name="customer_address_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-20">
+        <addColumn tableName="db_user_base_cart">
+            <column name="modified_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-21">
+        <addColumn tableName="db_user_base_cart_item">
+            <column name="modified_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-22">
+        <addColumn tableName="db_user_base_customer">
+            <column name="modified_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-23">
+        <addColumn tableName="db_user_base_nation">
+            <column name="modified_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-24">
+        <addColumn tableName="db_user_base_order">
+            <column name="modified_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-25">
+        <addColumn tableName="db_user_base_order_item">
+            <column name="modified_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-26">
+        <addColumn tableName="db_user_base_product">
+            <column name="modified_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-27">
+        <addColumn tableName="db_user_base_cart">
+            <column name="modified_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-28">
+        <addColumn tableName="db_user_base_cart_item">
+            <column name="modified_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-29">
+        <addColumn tableName="db_user_base_customer">
+            <column name="modified_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-30">
+        <addColumn tableName="db_user_base_nation">
+            <column name="modified_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-31">
+        <addColumn tableName="db_user_base_order">
+            <column name="modified_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-32">
+        <addColumn tableName="db_user_base_order_item">
+            <column name="modified_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-33">
+        <addColumn tableName="db_user_base_product">
+            <column name="modified_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-34">
+        <addColumn tableName="db_user_base_nation">
+            <column name="parent_id" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-35">
+        <addColumn tableName="db_user_base_cart">
+            <column name="status" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-36">
+        <addColumn tableName="db_user_base_cart_item">
+            <column name="status" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-37">
+        <addColumn tableName="db_user_base_customer">
+            <column name="status" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-38">
+        <addColumn tableName="db_user_base_nation">
+            <column name="status" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-39">
+        <addColumn tableName="db_user_base_order">
+            <column name="status" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-40">
+        <addColumn tableName="db_user_base_order_item">
+            <column name="status" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-41">
+        <addColumn tableName="db_user_base_product">
+            <column name="status" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Authentication" id="1740846118015-6">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="db_user_base_customer" constraintName="FKp9k0sso0tnqsk8jj99iv8a75d" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_user_base_account" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-42">
+        <addForeignKeyConstraint baseColumnNames="province_id" baseTableName="db_user_base_customer_address" constraintName="FK392y3ey1i3w1ebaky7knyvarf" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_user_base_nation" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-44">
+        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="db_user_base_nation" constraintName="FKfm7hrua7hasbf38ienyysm4ts" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_user_base_nation" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-45">
+        <addForeignKeyConstraint baseColumnNames="commune_id" baseTableName="db_user_base_customer_address" constraintName="FKj9r6fddcunudwqhc2w1pr22r3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_user_base_nation" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-46">
+        <addForeignKeyConstraint baseColumnNames="district_id" baseTableName="db_user_base_customer_address" constraintName="FKkwv00deay260aqi1i7vvjnwu1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_user_base_nation" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-48">
+        <addForeignKeyConstraint baseColumnNames="customer_address_id" baseTableName="db_user_base_order" constraintName="FKs2yrmpd78aswnxaanjvoubr23" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_user_base_customer_address" validate="true"/>
+    </changeSet>
+    <changeSet author="Authentication" id="1740843392980-49">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="db_user_base_customer_address" constraintName="FKsngpssstakvi0llh8vvn9fnuh" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="db_user_base_customer" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

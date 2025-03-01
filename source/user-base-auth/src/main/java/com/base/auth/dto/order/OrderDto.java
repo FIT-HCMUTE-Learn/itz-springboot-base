@@ -3,6 +3,8 @@ package com.base.auth.dto.order;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class OrderDto {
     @ApiModelProperty(name = "Id")
@@ -17,4 +19,6 @@ public class OrderDto {
     private Long customerId;
     @ApiModelProperty(name = "State")
     private Integer state;
+    @ApiModelProperty(name = "Created date")
+    private Date createdDate;
 }

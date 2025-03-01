@@ -1,5 +1,6 @@
 package com.base.auth.controller;
 
+import com.base.auth.constant.UserBaseConstant;
 import com.base.auth.dto.ApiMessageDto;
 import com.base.auth.dto.ErrorCode;
 import com.base.auth.dto.ResponseListDto;
@@ -9,6 +10,7 @@ import com.base.auth.form.nation.UpdateNationForm;
 import com.base.auth.mapper.NationMapper;
 import com.base.auth.model.Nation;
 import com.base.auth.model.criteria.NationCriteria;
+import com.base.auth.repository.CustomerAddressRepository;
 import com.base.auth.repository.CustomerRepository;
 import com.base.auth.repository.NationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +23,16 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/v1/nation")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class NationController {
+public class NationController extends ABasicController{
     @Autowired
     private NationRepository nationRepository;
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerAddressRepository customerAddressRepository;
     @Autowired
     private NationMapper nationMapper;
 
@@ -75,6 +78,16 @@ public class NationController {
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
 
         Nation nation = nationMapper.fromCreateNationFormToEntity(createNationForm);
+        if (!Objects.equals(createNationForm.getType(), UserBaseConstant.NATION_KIND_PROVINCE)) {
+            Nation parentNation = nationRepository.findById(createNationForm.getParentId()).orElseThrow(null);
+            if (parentNation == null) {
+                apiMessageDto.setResult(false);
+                apiMessageDto.setCode(ErrorCode.NATION_ERROR_PARENT_INVALID);
+                apiMessageDto.setMessage("Parent nation not found");
+                return apiMessageDto;
+            }
+            nation.setParent(parentNation);
+        }
         nationRepository.save(nation);
         apiMessageDto.setMessage("Create nation successfully");
 
@@ -94,6 +107,18 @@ public class NationController {
             return apiMessageDto;
         }
         nationMapper.updateFromUpdateNationForm(nation, updateNationForm);
+        if (!Objects.equals(nation.getType(), UserBaseConstant.NATION_KIND_PROVINCE)) {
+            Nation parentNation = nationRepository.findById(updateNationForm.getParentId()).orElseThrow(null);
+            if (parentNation == null) {
+                apiMessageDto.setResult(false);
+                apiMessageDto.setCode(ErrorCode.NATION_ERROR_PARENT_INVALID);
+                apiMessageDto.setMessage("Parent nation not found");
+                return apiMessageDto;
+            }
+            nation.setParent(parentNation);
+        } else {
+            nation.setParent(null);
+        }
         nationRepository.save(nation);
         apiMessageDto.setMessage("Update nation successfully");
 
@@ -112,7 +137,7 @@ public class NationController {
             apiMessageDto.setMessage("Nation not found");
             return apiMessageDto;
         }
-        if (customerRepository.countCustomerByNationId(nation.getId()) > 0) {
+        if (customerAddressRepository.countCustomerAddressByNationId(nation.getId()) > 0) {
             apiMessageDto.setResult(false);
             apiMessageDto.setCode(ErrorCode.NATION_ERROR_CANT_DELETE_RELATIONSHIP_WITH_CUSTOMER);
             apiMessageDto.setMessage("There are still customers in the nation");

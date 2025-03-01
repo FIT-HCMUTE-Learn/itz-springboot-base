@@ -8,8 +8,8 @@ import javax.validation.constraints.NotEmpty;
 
 @Data
 public class CreateNationForm{
-    @NotEmpty(message = "name cant not be null")
     @ApiModelProperty(name = "name", required = true)
+    @NotEmpty(message = "name cant not be null")
     private String name;
 
     @ApiModelProperty(name = "description", required = false)
@@ -18,4 +18,7 @@ public class CreateNationForm{
     @ApiModelProperty(name = "type", required = true)
     @NationType(allowNull = false)
     private Integer type;
+
+    @ApiModelProperty(name = "parent id", required = false)
+    private Long parentId;
 }

@@ -5,19 +5,14 @@ import com.base.auth.dto.ApiMessageDto;
 import com.base.auth.dto.ErrorCode;
 import com.base.auth.dto.ResponseListDto;
 import com.base.auth.dto.order.OrderDto;
-import com.base.auth.form.order.UpdateOrderForm;
+import com.base.auth.form.order.CancelOrderForm;
+import com.base.auth.form.order.ChangeOrderStateForm;
+import com.base.auth.form.order.CreateOrderForm;
 import com.base.auth.mapper.OrderMapper;
-import com.base.auth.model.Cart;
-import com.base.auth.model.CartItem;
-import com.base.auth.model.Order;
-import com.base.auth.model.OrderItem;
+import com.base.auth.model.*;
 import com.base.auth.model.criteria.OrderCriteria;
-import com.base.auth.repository.CartItemRepository;
-import com.base.auth.repository.CartRepository;
-import com.base.auth.repository.OrderItemRepository;
-import com.base.auth.repository.OrderRepository;
+import com.base.auth.repository.*;
 import com.base.auth.utils.CodeGeneratorUtils;
-import com.base.auth.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,12 +25,11 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/v1/order")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class OrderController {
+public class OrderController extends ABasicController{
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
@@ -44,6 +38,8 @@ public class OrderController {
     private OrderItemRepository orderItemRepository;
     @Autowired
     private CartItemRepository cartItemRepository;
+    @Autowired
+    private CustomerAddressRepository customerAddressRepository;
     @Autowired
     private OrderMapper orderMapper;
     @Autowired
@@ -70,13 +66,13 @@ public class OrderController {
         return apiMessageDto;
     }
 
-    @GetMapping(value = "/my-orders", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ORD_L_MY')")
+    @GetMapping(value = "/client-my-orders", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ORD_L')")
     public ApiMessageDto<ResponseListDto<List<OrderDto>>> getMyOrders(
             @Valid @ModelAttribute OrderCriteria orderCriteria,
             Pageable pageable
     ) {
-        Long accountId = SecurityUtils.getAccountId();
+        Long accountId = getCurrentUser();
         orderCriteria.setCustomerId(accountId);
         Specification<Order> specification = orderCriteria.getSpecification();
         Page<Order> orderPage = orderRepository.findAll(specification, pageable);
@@ -93,14 +89,38 @@ public class OrderController {
         return apiMessageDto;
     }
 
-    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN_ORD_V')")
+    public ApiMessageDto<OrderDto> getOrderDetail(@PathVariable Long id) {
+        ApiMessageDto<OrderDto> apiMessageDto = new ApiMessageDto<>();
+
+        Order order = orderRepository.findById(id).orElse(null);
+        if (order == null) {
+            apiMessageDto.setResult(false);
+            apiMessageDto.setCode(ErrorCode.ORDER_ERROR_NOT_FOUND);
+            apiMessageDto.setMessage("Order not found");
+            return apiMessageDto;
+        }
+        apiMessageDto.setData(orderMapper.fromEntityToOrderDto(order));
+        apiMessageDto.setMessage("Get order successfully");
+
+        return apiMessageDto;
+    }
+
+    @PostMapping(value = "/client-create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ORD_C')")
     @Transactional
-    public ApiMessageDto<String> createOrder() {
+    public ApiMessageDto<String> createOrder(@Valid @RequestBody CreateOrderForm createOrderForm) {
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
 
-        Long accountId = SecurityUtils.getAccountId();
+        Long accountId = getCurrentUser();
         Cart cart = cartRepository.findByCustomerId(accountId);
+        if (cart == null) {
+            apiMessageDto.setResult(false);
+            apiMessageDto.setCode(ErrorCode.CART_ERROR_NOT_FOUND);
+            apiMessageDto.setMessage("Cart not found");
+            return apiMessageDto;
+        }
 
         List<CartItem> cartItems = cartItemRepository.findByCartId(cart.getId());
         if (cartItems.isEmpty()) {
@@ -112,9 +132,9 @@ public class OrderController {
 
         // Create Order
         Order order = new Order();
-        order.setCode(codeGeneratorUtils.generateUniqueCode(Order.class, "code", 6));
+        order.setCode(codeGeneratorUtils.generateCode(6));
         order.setCustomer(cart.getCustomer());
-        order.setState(1); // default BOOKING
+        order.setState(UserBaseConstant.ORDER_STATE_BOOKING);
 
         double totalMoney = 0;
         double totalSaleOff = 0;
@@ -138,6 +158,17 @@ public class OrderController {
         order.setTotalMoney(totalMoney);
         order.setTotalSaleOff(totalSaleOff);
 
+        // Add CustomerAddress to Order
+        CustomerAddress customerAddress = customerAddressRepository.findById(createOrderForm.getCustomerAddressId()).orElse(null);
+        if (customerAddress == null) {
+            apiMessageDto.setResult(false);
+            apiMessageDto.setCode(ErrorCode.CUSTOMER_ADDRESS_ERROR_NOT_FOUND);
+            apiMessageDto.setMessage("Customer address not found");
+            return apiMessageDto;
+        }
+        order.setCustomerAddress(customerAddress);
+
+        // Save Order and OrderItem
         orderRepository.save(order);
         orderItemRepository.saveAll(orderItems);
 
@@ -148,13 +179,12 @@ public class OrderController {
         return apiMessageDto;
     }
 
-    @PutMapping(value = "/approve", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/change-state", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMIN_ORD_U')")
-    @Transactional
-    public ApiMessageDto<String> approveOrder(@Valid @RequestBody UpdateOrderForm updateOrderForm) {
+    public ApiMessageDto<String> approveOrder(@Valid @RequestBody ChangeOrderStateForm changeOrderStateForm) {
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
 
-        Order order = orderRepository.findById(updateOrderForm.getId()).orElse(null);
+        Order order = orderRepository.findById(changeOrderStateForm.getId()).orElse(null);
         if (order == null) {
             apiMessageDto.setResult(false);
             apiMessageDto.setCode(ErrorCode.ORDER_ERROR_NOT_FOUND);
@@ -162,7 +192,7 @@ public class OrderController {
             return apiMessageDto;
         }
 
-        Integer newState = updateOrderForm.getState();
+        Integer newState = changeOrderStateForm.getState();
         if (newState != order.getState() + 1) {
             apiMessageDto.setResult(false);
             apiMessageDto.setCode(ErrorCode.ORDER_ERROR_INVALID_TRANSITION);
@@ -172,7 +202,26 @@ public class OrderController {
         order.setState(newState);
         orderRepository.save(order);
 
-        apiMessageDto.setMessage("Order state updated successfully!");
+        apiMessageDto.setMessage("Change order state successfully!");
+        return apiMessageDto;
+    }
+
+    @PutMapping(value = "/cancel", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ORD_U')")
+    public ApiMessageDto<String> cancelOrder(@Valid @RequestBody CancelOrderForm cancelOrderForm) {
+        ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
+
+        Order order = orderRepository.findById(cancelOrderForm.getId()).orElse(null);
+        if (order == null) {
+            apiMessageDto.setResult(false);
+            apiMessageDto.setCode(ErrorCode.ORDER_ERROR_NOT_FOUND);
+            apiMessageDto.setMessage("Order not found");
+            return apiMessageDto;
+        }
+        order.setState(UserBaseConstant.ORDER_STATE_CANCEL);
+        orderRepository.save(order);
+
+        apiMessageDto.setMessage("Cancel order successfully!");
         return apiMessageDto;
     }
 }

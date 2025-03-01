@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(name = "db_user_base_nation")
 @Getter
 @Setter
-public class Nation {
+public class Nation extends Auditable<String> {
     @Id
     @GenericGenerator(name = "idGenerator", strategy = "com.base.auth.service.id.IdGenerator")
     @GeneratedValue(generator = "idGenerator")
@@ -22,4 +22,8 @@ public class Nation {
     private String description;
 
     private Integer type;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
+    private Nation parent;
 }
