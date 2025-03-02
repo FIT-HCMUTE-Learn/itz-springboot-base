@@ -30,7 +30,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/customer")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class CustomerController {
+public class CustomerController extends ABasicController{
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
@@ -115,40 +115,13 @@ public class CustomerController {
         Account savedAccount = accountRepository.save(account);
 
         // Create Customer
-        Nation province = nationRepository.findByIdAndType(createCustomerForm.getProvinceId(),
-                UserBaseConstant.NATION_KIND_PROVINCE).orElseThrow(null);
-        if (province == null){
-            apiMessageDto.setResult(false);
-            apiMessageDto.setCode(ErrorCode.NATION_ERROR_NOT_FOUND);
-            apiMessageDto.setMessage("Province not found");
-            return apiMessageDto;
-        }
-        Nation district = nationRepository.findByIdAndType(createCustomerForm.getDistrictId(),
-                UserBaseConstant.NATION_KIND_DISTRICT).orElseThrow(null);
-        if (district == null){
-            apiMessageDto.setResult(false);
-            apiMessageDto.setCode(ErrorCode.NATION_ERROR_NOT_FOUND);
-            apiMessageDto.setMessage("District not found");
-            return apiMessageDto;
-        }
-        Nation commune = nationRepository.findByIdAndType(createCustomerForm.getCommuneId(),
-                UserBaseConstant.NATION_KIND_COMMUNE).orElseThrow(null);
-        if (commune == null){
-            apiMessageDto.setResult(false);
-            apiMessageDto.setCode(ErrorCode.NATION_ERROR_NOT_FOUND);
-            apiMessageDto.setMessage("Commune not found");
-            return apiMessageDto;
-        }
         Customer customer = customerMapper.fromCreateCustomerFormToEntity(createCustomerForm);
         customer.setAccount(savedAccount);
-        customer.setProvince(province);
-        customer.setDistrict(district);
-        customer.setCommune(commune);
         customerRepository.save(customer);
 
         // Create Cart
         Cart cart = new Cart();
-        String cartCode = codeGeneratorUtils.generateUniqueCode(Cart.class, "code", 6);
+        String cartCode = codeGeneratorUtils.generateCode(6);
         cart.setCode(cartCode);
         cart.setCustomer(customer);
         cartRepository.save(cart);
@@ -199,39 +172,6 @@ public class CustomerController {
         accountRepository.save(account);
 
         // Update Customer
-        if (!updateCustomerForm.getProvinceId().equals(customer.getProvince().getId())) {
-            Nation province = nationRepository.findByIdAndType(updateCustomerForm.getProvinceId(),
-                    UserBaseConstant.NATION_KIND_PROVINCE).orElseThrow(null);
-            if (province == null){
-                apiMessageDto.setResult(false);
-                apiMessageDto.setCode(ErrorCode.NATION_ERROR_NOT_FOUND);
-                apiMessageDto.setMessage("Province not found");
-                return apiMessageDto;
-            }
-            customer.setProvince(province);
-        }
-        if (!updateCustomerForm.getDistrictId().equals(customer.getDistrict().getId())) {
-            Nation district = nationRepository.findByIdAndType(updateCustomerForm.getDistrictId(),
-                    UserBaseConstant.NATION_KIND_DISTRICT).orElseThrow(null);
-            if (district == null){
-                apiMessageDto.setResult(false);
-                apiMessageDto.setCode(ErrorCode.NATION_ERROR_NOT_FOUND);
-                apiMessageDto.setMessage("District not found");
-                return apiMessageDto;
-            }
-            customer.setDistrict(district);
-        }
-        if (!updateCustomerForm.getCommuneId().equals(customer.getCommune().getId())) {
-            Nation commune = nationRepository.findByIdAndType(updateCustomerForm.getCommuneId(),
-                    UserBaseConstant.NATION_KIND_COMMUNE).orElseThrow(null);
-            if (commune == null){
-                apiMessageDto.setResult(false);
-                apiMessageDto.setCode(ErrorCode.NATION_ERROR_NOT_FOUND);
-                apiMessageDto.setMessage("Commune not found");
-                return apiMessageDto;
-            }
-            customer.setCommune(commune);
-        }
         customerMapper.updateFromUpdateCustomerForm(customer, updateCustomerForm);
         customerRepository.save(customer);
         apiMessageDto.setMessage("Update customer successfully");

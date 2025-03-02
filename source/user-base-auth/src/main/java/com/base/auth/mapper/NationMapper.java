@@ -3,7 +3,6 @@ package com.base.auth.mapper;
 import com.base.auth.dto.nation.NationDto;
 import com.base.auth.form.nation.CreateNationForm;
 import com.base.auth.form.nation.UpdateNationForm;
-import com.base.auth.form.news.UpdateNewsForm;
 import com.base.auth.model.Nation;
 import org.mapstruct.*;
 
@@ -31,10 +30,19 @@ public interface NationMapper {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "description", target = "description")
     @Mapping(source = "type", target = "type")
+    @Mapping(source = "parent", target = "parent", qualifiedByName = "mapParent")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToNationDto")
     NationDto fromEntityToNationDto(Nation nation);
 
     @IterableMapping(elementTargetType = NationDto.class, qualifiedByName = "fromEntityToNationDto")
     List<NationDto> fromEntityToNationDtoList(List<Nation> nations);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "description", target = "description")
+    @Mapping(source = "type", target = "type")
+    @BeanMapping(ignoreByDefault = true)
+    @Named("mapParent")
+    NationDto mapParent(Nation nation);
 }

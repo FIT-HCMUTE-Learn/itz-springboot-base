@@ -46,16 +46,4 @@ public class UpdateCustomerForm {
     @ApiModelProperty(name = "gender", required = false)
     @CustomerGender(allowNull = true)
     private Integer gender;
-
-    @ApiModelProperty(name = "address", required = false)
-    private String address;
-
-    @ApiModelProperty(name = "province id", required = false)
-    private Long provinceId;
-
-    @ApiModelProperty(name = "district id", required = false)
-    private Long districtId;
-
-    @ApiModelProperty(name = "commune id", required = false)
-    private Long communeId;
 }

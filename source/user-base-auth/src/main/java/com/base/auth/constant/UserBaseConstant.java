@@ -28,6 +28,9 @@ public class UserBaseConstant {
     public static final Integer CUSTOMER_GENDER_MALE = 1;
     public static final Integer CUSTOMER_GENDER_FEMALE = 2;
 
+    public static final Integer CUSTOMER_ADDRESS_HOME = 1;
+    public static final Integer CUSTOMER_ADDRESS_OFFICE = 2;
+
     public static final Integer GROUP_KIND_ADMIN = 1;
     public static final Integer GROUP_KIND_MANAGER = 2;
     public static final Integer GROUP_KIND_USER=3;

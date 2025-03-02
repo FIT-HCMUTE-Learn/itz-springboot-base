@@ -10,18 +10,16 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        uses = {AccountMapper.class, NationMapper.class})
+        uses = {AccountMapper.class, CustomerAddressMapper.class})
 public interface CustomerMapper {
     @Mapping(source = "birthday", target = "birthday")
     @Mapping(source = "gender", target = "gender")
-    @Mapping(source = "address", target = "address")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromCreateCustomerFormToEntity")
     Customer fromCreateCustomerFormToEntity(CreateCustomerForm createCustomerForm);
 
     @Mapping(source = "birthday", target = "birthday")
     @Mapping(source = "gender", target = "gender")
-    @Mapping(source = "address", target = "address")
     @BeanMapping(ignoreByDefault = true)
     @Named("updateFromUpdateCustomerForm")
     void updateFromUpdateCustomerForm(@MappingTarget Customer customer, UpdateCustomerForm updateCustomerForm);
@@ -30,10 +28,7 @@ public interface CustomerMapper {
     @Mapping(source = "account", target = "account", qualifiedByName = "fromAccountToDto")
     @Mapping(source = "birthday", target = "birthday")
     @Mapping(source = "gender", target = "gender")
-    @Mapping(source = "address", target = "address")
-    @Mapping(source = "province", target = "province", qualifiedByName = "fromEntityToNationDto")
-    @Mapping(source = "district", target = "district", qualifiedByName = "fromEntityToNationDto")
-    @Mapping(source = "commune", target = "commune", qualifiedByName = "fromEntityToNationDto")
+    @Mapping(source = "customerAddresses", target = "customerAddresses", qualifiedByName = "fromEntityToCustomerAddressDtoList")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToCustomerDto")
     CustomerDto fromEntityToCustomerDto(Customer customer);

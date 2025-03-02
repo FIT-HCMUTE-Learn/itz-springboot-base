@@ -1,5 +1,6 @@
 package com.base.auth.controller;
 
+import com.base.auth.form.items.UpdateCartItem;
 import com.base.auth.dto.ApiMessageDto;
 import com.base.auth.form.cart.UpdateCartForm;
 import com.base.auth.model.Cart;
@@ -8,7 +9,6 @@ import com.base.auth.model.Product;
 import com.base.auth.repository.CartItemRepository;
 import com.base.auth.repository.CartRepository;
 import com.base.auth.repository.ProductRepository;
-import com.base.auth.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/v1/cart")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class CartController {
+public class CartController extends ABasicController{
     @Autowired
     private CartRepository cartRepository;
     @Autowired
@@ -35,46 +35,40 @@ public class CartController {
     @Transactional
     public ApiMessageDto<String> updateCart(@Valid @RequestBody UpdateCartForm updateCartForm) {
         ApiMessageDto<String> apiMessageDto = new ApiMessageDto<>();
-
-        Long accountId = SecurityUtils.getAccountId();
+        Long accountId = getCurrentUser();
         Cart cart = cartRepository.findByCustomerId(accountId);
+        List<CartItem> cartItems = cart.getCartItems();
 
-        Map<Long, Integer> productQuantities = updateCartForm.getProductQuantities();
-        List<Long> productIds = new ArrayList<>(productQuantities.keySet());
+        // Convert list from form to Map<ProductId, Quantity>
+        Map<Long, Integer> updatedProducts = updateCartForm.getCartItems().stream()
+                .collect(Collectors.toMap(UpdateCartItem::getProductId, UpdateCartItem::getQuantity));
 
-        // Get list CartItem already in Cart
-        List<CartItem> existingCartItems = cartItemRepository.findByCartIdAndProductIds(cart.getId(), productIds);
-        Map<Long, CartItem> existingCartItemMap = existingCartItems.stream()
-                .collect(Collectors.toMap(ci -> ci.getProduct().getId(), ci -> ci));
-
-        // Get list Product before go to loop
-        List<Product> products = productRepository.findAllById(productIds);
-        Map<Long, Product> productMap = products.stream()
-                .collect(Collectors.toMap(Product::getId, p -> p));
-
-        List<CartItem> newCartItems = new ArrayList<>();
-        for (Map.Entry<Long, Integer> entry : productQuantities.entrySet()) {
-            Long productId = entry.getKey();
-            Integer quantity = entry.getValue();
-
-            if (existingCartItemMap.containsKey(productId)) {
-                cartItemRepository.updateQuantity(cart.getId(), productId, quantity);
+        // Iterate over cartItems and remove items not in the updated list, update existing ones
+        Iterator<CartItem> iterator = cartItems.iterator();
+        while (iterator.hasNext()) {
+            CartItem cartItem = iterator.next();
+            Long productId = cartItem.getProduct().getId();
+            if (updatedProducts.containsKey(productId)) {
+                cartItem.setQuantity(cartItem.getQuantity() + updatedProducts.get(productId));
+                updatedProducts.remove(productId);
             } else {
-                Product product = productMap.get(productId);
-                if (product != null) {
-                    CartItem newCartItem = new CartItem();
-                    newCartItem.setCart(cart);
-                    newCartItem.setProduct(product);
-                    newCartItem.setQuantity(quantity);
-                    newCartItems.add(newCartItem);
-                }
+                iterator.remove();
             }
         }
-        if (!newCartItems.isEmpty()) {
-            cartItemRepository.saveAll(newCartItems);
-        }
-        cartItemRepository.deleteCartItemsNotIn(cart.getId(), productIds);
 
+        // Add new products that were not present in the original cart
+        if (!updatedProducts.isEmpty()) {
+            List<Product> newProducts = productRepository.findAllById(updatedProducts.keySet());
+            for (Product product : newProducts) {
+                CartItem newCartItem = new CartItem();
+                newCartItem.setCart(cart);
+                newCartItem.setProduct(product);
+                newCartItem.setQuantity(updatedProducts.get(product.getId()));
+                cartItems.add(newCartItem);
+            }
+        }
+
+        cartRepository.save(cart);
         apiMessageDto.setMessage("Cart updated successfully");
         return apiMessageDto;
     }

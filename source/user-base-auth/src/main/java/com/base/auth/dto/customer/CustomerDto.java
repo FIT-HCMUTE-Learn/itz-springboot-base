@@ -1,28 +1,23 @@
 package com.base.auth.dto.customer;
 
 import com.base.auth.dto.account.AccountDto;
-import com.base.auth.dto.nation.NationDto;
+import com.base.auth.dto.customeraddress.CustomerAddressDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class CustomerDto {
-    @ApiModelProperty(name = "id")
+    @ApiModelProperty(name = "Id")
     private Long id;
-    @ApiModelProperty(name = "account")
+    @ApiModelProperty(name = "Account")
     private AccountDto account;
-    @ApiModelProperty(name = "birthday")
+    @ApiModelProperty(name = "Birthday")
     private Date birthday;
-    @ApiModelProperty(name = "gender")
+    @ApiModelProperty(name = "Gender")
     private Integer gender;
-    @ApiModelProperty(name = "address")
-    private String address;
-    @ApiModelProperty(name = "province")
-    private NationDto province;
-    @ApiModelProperty(name = "district")
-    private NationDto district;
-    @ApiModelProperty(name = "commune")
-    private NationDto commune;
+    @ApiModelProperty(name = "Address list")
+    private List<CustomerAddressDto> customerAddresses;
 }

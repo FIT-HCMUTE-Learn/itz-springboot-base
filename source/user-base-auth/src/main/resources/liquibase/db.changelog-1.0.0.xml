@@ -71,21 +71,8 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="account_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
             <column name="birthday" type="date"/>
             <column name="gender" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="address" type="VARCHAR(255)"/>
-            <column name="province_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="district_id" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="commune_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -285,26 +272,6 @@
             <column name="permission_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="Authentication" id="1740462528191-19">
-        <createIndex indexName="fk_customer_account" tableName="db_user_base_customer">
-            <column name="account_id"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Authentication" id="1740462528191-20">
-        <createIndex indexName="fk_customer_commune" tableName="db_user_base_customer">
-            <column name="commune_id"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Authentication" id="1740462528191-21">
-        <createIndex indexName="fk_customer_district" tableName="db_user_base_customer">
-            <column name="district_id"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="Authentication" id="1740462528191-22">
-        <createIndex indexName="fk_customer_province" tableName="db_user_base_customer">
-            <column name="province_id"/>
-        </createIndex>
-    </changeSet>
     <changeSet author="Authentication" id="1740462528191-23">
         <createIndex indexName="oauth_refresh_token_id" tableName="oauth_access_token">
             <column name="token_id"/>
@@ -321,17 +288,5 @@
     </changeSet>
     <changeSet author="Authentication" id="1740462528191-27">
         <addForeignKeyConstraint baseColumnNames="permission_id" baseTableName="db_user_base_permission_group" constraintName="FKp6wyjpvmwh4e4kpa61v097g5f" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_user_base_permission" validate="true"/>
-    </changeSet>
-    <changeSet author="Authentication" id="1740462528191-28">
-        <addForeignKeyConstraint baseColumnNames="account_id" baseTableName="db_user_base_customer" constraintName="fk_customer_account" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_user_base_account" validate="true"/>
-    </changeSet>
-    <changeSet author="Authentication" id="1740462528191-29">
-        <addForeignKeyConstraint baseColumnNames="commune_id" baseTableName="db_user_base_customer" constraintName="fk_customer_commune" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_user_base_nation" validate="true"/>
-    </changeSet>
-    <changeSet author="Authentication" id="1740462528191-30">
-        <addForeignKeyConstraint baseColumnNames="district_id" baseTableName="db_user_base_customer" constraintName="fk_customer_district" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_user_base_nation" validate="true"/>
-    </changeSet>
-    <changeSet author="Authentication" id="1740462528191-31">
-        <addForeignKeyConstraint baseColumnNames="province_id" baseTableName="db_user_base_customer" constraintName="fk_customer_province" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="db_user_base_nation" validate="true"/>
     </changeSet>
 </databaseChangeLog>

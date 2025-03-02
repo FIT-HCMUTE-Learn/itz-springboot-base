@@ -25,7 +25,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/v1/news")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class NewsController {
+public class NewsController extends ABasicController{
     @Autowired
     private NewsRepository newsRepository;
 

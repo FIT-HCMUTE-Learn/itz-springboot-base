@@ -48,20 +48,4 @@ public class CreateCustomerForm {
     @ApiModelProperty(name = "gender", required = true)
     @CustomerGender(allowNull = false)
     private Integer gender;
-
-    @ApiModelProperty(name = "address", required = true)
-    @NotEmpty(message = "address can not be empty")
-    private String address;
-
-    @ApiModelProperty(name = "province id", required = true)
-    @NotNull(message = "province id can not be null")
-    private Long provinceId;
-
-    @ApiModelProperty(name = "district id", required = true)
-    @NotNull(message = "district id can not be null")
-    private Long districtId;
-
-    @ApiModelProperty(name = "commune id", required = true)
-    @NotNull(message = "commune id can not be null")
-    private Long communeId;
 }

@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(name = "db_user_base_order")
 @Getter
 @Setter
-public class Order {
+public class Order extends Auditable<String> {
     @Id
     @GenericGenerator(name = "idGenerator", strategy = "com.base.auth.service.id.IdGenerator")
     @GeneratedValue(generator = "idGenerator")
@@ -24,8 +24,12 @@ public class Order {
     private Double totalSaleOff;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
     private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_address_id", nullable = false)
+    private CustomerAddress customerAddress;
 
     private Integer state;
 }

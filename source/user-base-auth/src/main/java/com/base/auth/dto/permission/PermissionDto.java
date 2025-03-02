@@ -17,6 +17,6 @@ public class PermissionDto {
     private String description;
     @ApiModelProperty(name = "nameGroup")
     private String nameGroup;
-
+    @ApiModelProperty(name = "pCode")
     private String pCode;
 }

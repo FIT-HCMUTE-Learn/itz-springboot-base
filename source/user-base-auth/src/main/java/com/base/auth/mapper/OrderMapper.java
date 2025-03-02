@@ -16,6 +16,7 @@ public interface OrderMapper {
     @Mapping(source = "totalSaleOff", target = "totalSaleOff")
     @Mapping(source = "customer.id", target = "customerId")
     @Mapping(source = "state", target = "state")
+    @Mapping(source = "createdDate", target = "createdDate")
     @BeanMapping(ignoreByDefault = true)
     @Named("fromEntityToOrderDto")
     OrderDto fromEntityToOrderDto(Order order);

@@ -13,4 +13,6 @@ public class NationDto {
     private String description;
     @ApiModelProperty(name = "type")
     private Integer type;
+    @ApiModelProperty(name = "parent")
+    private NationDto parent;
 }

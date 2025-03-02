@@ -100,6 +100,11 @@ public class ErrorCode {
     public static final String ORDER_ERROR_INVALID_TRANSITION = "ERROR-ORDER-0002";
 
     /**
+     * Starting error code ORDER
+     * */
+    public static final String CUSTOMER_ADDRESS_ERROR_NOT_FOUND = "ERROR-ORDER-0000";
+
+    /**
      * Starting error code SETTINGS
      * */
     public static final String SETTINGS_ERROR_NOT_FOUND = "ERROR-SETTING-0000";

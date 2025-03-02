@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @ApiModel(description = "Form for update order")
-public class UpdateOrderForm {
+public class ChangeOrderStateForm {
     @ApiModelProperty(name = "Id", required = true)
     @NotNull(message = "Id can not be null")
     private Long id;

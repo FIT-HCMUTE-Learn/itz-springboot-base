@@ -22,4 +22,7 @@ public class UpdateNationForm {
     @ApiModelProperty(name = "type", required = false)
     @NationType(allowNull = true)
     private Integer type;
+
+    @ApiModelProperty(name = "parent id", required = false)
+    private Long parentId;
 }
