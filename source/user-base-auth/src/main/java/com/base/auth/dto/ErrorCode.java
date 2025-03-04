@@ -103,6 +103,7 @@ public class ErrorCode {
      * Starting error code ORDER
      * */
     public static final String CUSTOMER_ADDRESS_ERROR_NOT_FOUND = "ERROR-ORDER-0000";
+    public static final String CUSTOMER_ADDRESS_CANT_DELETE_RELATIONSHIP_WITH_ORDER = "ERROR-NATION-0002";
 
     /**
      * Starting error code SETTINGS
