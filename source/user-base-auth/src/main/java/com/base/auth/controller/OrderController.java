@@ -107,6 +107,24 @@ public class OrderController extends ABasicController{
         return apiMessageDto;
     }
 
+    @GetMapping(value = "/client-get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ORD_V')")
+    public ApiMessageDto<OrderDto> getOrderDetailForClient(@PathVariable Long id) {
+        ApiMessageDto<OrderDto> apiMessageDto = new ApiMessageDto<>();
+
+        Order order = orderRepository.findById(id).orElse(null);
+        if (order == null) {
+            apiMessageDto.setResult(false);
+            apiMessageDto.setCode(ErrorCode.ORDER_ERROR_NOT_FOUND);
+            apiMessageDto.setMessage("Order not found");
+            return apiMessageDto;
+        }
+        apiMessageDto.setData(orderMapper.fromEntityToOrderDto(order));
+        apiMessageDto.setMessage("Get order successfully");
+
+        return apiMessageDto;
+    }
+
     @PostMapping(value = "/client-create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ORD_C')")
     @Transactional

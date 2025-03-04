@@ -15,6 +15,7 @@ import com.base.auth.model.criteria.CustomerAddressCriteria;
 import com.base.auth.repository.CustomerAddressRepository;
 import com.base.auth.repository.CustomerRepository;
 import com.base.auth.repository.NationRepository;
+import com.base.auth.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +38,8 @@ public class CustomerAddressController extends ABasicController {
     private CustomerRepository customerRepository;
     @Autowired
     private NationRepository nationRepository;
+    @Autowired
+    private OrderRepository orderRepository;
     @Autowired
     private CustomerAddressMapper customerAddressMapper;
 
@@ -91,7 +94,7 @@ public class CustomerAddressController extends ABasicController {
         Customer customer = customerRepository.findById(accountId).orElseThrow(null);
         customerAddress.setCustomer(customer);
 
-        // Set CustomerAddress attributes
+        // Valid Nation Province
         Nation province = nationRepository.findByIdAndType(createCustomerAddressForm.getProvinceId(),
                 UserBaseConstant.NATION_KIND_PROVINCE).orElseThrow(null);
         if (province == null){
@@ -100,6 +103,9 @@ public class CustomerAddressController extends ABasicController {
             apiMessageDto.setMessage("Province not found");
             return apiMessageDto;
         }
+        customerAddress.setProvince(province);
+
+        // Valid Nation District
         Nation district = nationRepository.findByIdAndType(createCustomerAddressForm.getDistrictId(),
                 UserBaseConstant.NATION_KIND_DISTRICT).orElseThrow(null);
         if (district == null){
@@ -108,6 +114,15 @@ public class CustomerAddressController extends ABasicController {
             apiMessageDto.setMessage("District not found");
             return apiMessageDto;
         }
+        if (!district.getParent().getId().equals(province.getId())) {
+            apiMessageDto.setResult(false);
+            apiMessageDto.setCode(ErrorCode.NATION_ERROR_PARENT_INVALID);
+            apiMessageDto.setMessage("District parent invalid");
+            return apiMessageDto;
+        }
+        customerAddress.setDistrict(district);
+
+        // Valid Nation Commune
         Nation commune = nationRepository.findByIdAndType(createCustomerAddressForm.getCommuneId(),
                 UserBaseConstant.NATION_KIND_COMMUNE).orElseThrow(null);
         if (commune == null){
@@ -116,22 +131,21 @@ public class CustomerAddressController extends ABasicController {
             apiMessageDto.setMessage("Commune not found");
             return apiMessageDto;
         }
-        customerAddress.setProvince(province);
-        customerAddress.setDistrict(district);
+        if (!commune.getParent().getId().equals(district.getId())) {
+            apiMessageDto.setResult(false);
+            apiMessageDto.setCode(ErrorCode.NATION_ERROR_PARENT_INVALID);
+            apiMessageDto.setMessage("Commune parent invalid");
+            return apiMessageDto;
+        }
         customerAddress.setCommune(commune);
 
         // Process default CustomerAddress
-        Long count = customerAddressRepository.countByCustomerId(customer.getId());
-        if (count == 0) {
-            customerAddress.setIsDefault(true);
-        } else {
-            if (createCustomerAddressForm.getIsDefault()) {
-                customerAddressRepository.reverseIsDefaultByCustomerId(customer.getId());
-            }
+        if (createCustomerAddressForm.getIsDefault()) {
+            customerAddressRepository.reverseIsDefaultByCustomerId(customer.getId());
         }
+
         customerAddressRepository.save(customerAddress);
         apiMessageDto.setMessage("Create customer address successfully");
-
         return apiMessageDto;
     }
 
@@ -150,7 +164,7 @@ public class CustomerAddressController extends ABasicController {
             return apiMessageDto;
         }
 
-        // Update CustomerAddress
+        // Update Nation Province
         customerAddressMapper.updateFromUpdateCustomerAddressForm(customerAddress, updateCustomerAddressForm);
         if (!updateCustomerAddressForm.getProvinceId().equals(customerAddress.getProvince().getId())) {
             Nation province = nationRepository.findByIdAndType(updateCustomerAddressForm.getProvinceId(),
@@ -163,6 +177,8 @@ public class CustomerAddressController extends ABasicController {
             }
             customerAddress.setProvince(province);
         }
+
+        // Update Nation District
         if (!updateCustomerAddressForm.getDistrictId().equals(customerAddress.getDistrict().getId())) {
             Nation district = nationRepository.findByIdAndType(updateCustomerAddressForm.getDistrictId(),
                     UserBaseConstant.NATION_KIND_DISTRICT).orElseThrow(null);
@@ -172,8 +188,16 @@ public class CustomerAddressController extends ABasicController {
                 apiMessageDto.setMessage("District not found");
                 return apiMessageDto;
             }
+            if (!district.getParent().getId().equals(customerAddress.getProvince().getId())) {
+                apiMessageDto.setResult(false);
+                apiMessageDto.setCode(ErrorCode.NATION_ERROR_PARENT_INVALID);
+                apiMessageDto.setMessage("District parent invalid");
+                return apiMessageDto;
+            }
             customerAddress.setDistrict(district);
         }
+
+        // Update Nation Commune
         if (!updateCustomerAddressForm.getCommuneId().equals(customerAddress.getCommune().getId())) {
             Nation commune = nationRepository.findByIdAndType(updateCustomerAddressForm.getCommuneId(),
                     UserBaseConstant.NATION_KIND_COMMUNE).orElseThrow(null);
@@ -183,22 +207,23 @@ public class CustomerAddressController extends ABasicController {
                 apiMessageDto.setMessage("Commune not found");
                 return apiMessageDto;
             }
+            if (!commune.getParent().getId().equals(customerAddress.getDistrict().getId())) {
+                apiMessageDto.setResult(false);
+                apiMessageDto.setCode(ErrorCode.NATION_ERROR_PARENT_INVALID);
+                apiMessageDto.setMessage("Commune parent invalid");
+                return apiMessageDto;
+            }
             customerAddress.setCommune(commune);
         }
 
         // Process default CustomerAddress
         Long accountId = getCurrentUser();
-        Long count = customerAddressRepository.countByCustomerId(accountId);
-        if (count == 0) {
-            customerAddress.setIsDefault(true);
-        } else {
-            if (updateCustomerAddressForm.getIsDefault()) {
-                customerAddressRepository.reverseIsDefaultByCustomerId(accountId);
-            }
+        if (updateCustomerAddressForm.getIsDefault()) {
+            customerAddressRepository.reverseIsDefaultByCustomerId(accountId);
         }
+
         customerAddressRepository.save(customerAddress);
         apiMessageDto.setMessage("Update customer address successfully");
-
         return apiMessageDto;
     }
 
@@ -212,6 +237,13 @@ public class CustomerAddressController extends ABasicController {
             apiMessageDto.setResult(false);
             apiMessageDto.setCode(ErrorCode.CUSTOMER_ADDRESS_ERROR_NOT_FOUND);
             apiMessageDto.setMessage("Customer address not found");
+            return apiMessageDto;
+        }
+        Long count = orderRepository.countByCustomerAddressId(id);
+        if (count > 0) {
+            apiMessageDto.setResult(false);
+            apiMessageDto.setCode(ErrorCode.CUSTOMER_ADDRESS_CANT_DELETE_RELATIONSHIP_WITH_ORDER);
+            apiMessageDto.setMessage("There are still orders in the customer address");
             return apiMessageDto;
         }
         customerAddressRepository.deleteById(id);

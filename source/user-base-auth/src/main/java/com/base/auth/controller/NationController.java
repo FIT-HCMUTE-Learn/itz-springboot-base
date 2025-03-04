@@ -86,6 +86,12 @@ public class NationController extends ABasicController{
                 apiMessageDto.setMessage("Parent nation not found");
                 return apiMessageDto;
             }
+            if (createNationForm.getType() + 1 != parentNation.getType()) {
+                apiMessageDto.setResult(false);
+                apiMessageDto.setCode(ErrorCode.NATION_ERROR_PARENT_INVALID);
+                apiMessageDto.setMessage("Parent nation invalid");
+                return apiMessageDto;
+            }
             nation.setParent(parentNation);
         }
         nationRepository.save(nation);
@@ -113,6 +119,12 @@ public class NationController extends ABasicController{
                 apiMessageDto.setResult(false);
                 apiMessageDto.setCode(ErrorCode.NATION_ERROR_PARENT_INVALID);
                 apiMessageDto.setMessage("Parent nation not found");
+                return apiMessageDto;
+            }
+            if (updateNationForm.getType() + 1 != parentNation.getType()) {
+                apiMessageDto.setResult(false);
+                apiMessageDto.setCode(ErrorCode.NATION_ERROR_PARENT_INVALID);
+                apiMessageDto.setMessage("Parent nation invalid");
                 return apiMessageDto;
             }
             nation.setParent(parentNation);
